@@ -34,7 +34,6 @@ export class StepsService {
 
   getStepName(id:number|string) {
     return [
-      null,
       'add items',
       'vote',
       'select',
