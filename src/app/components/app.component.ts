@@ -14,17 +14,31 @@ import {BucketComponent} from './bucket.component';
       display: flex;
       flex-direction: column;
     }
-    .buckets-container {
+    .ret-buckets {
       flex-grow: 1;
-      border: 1px solid black;
       display: flex;
-      flex-flow: column wrap;
+      flex-direction: row;
+    }
+    .ret-buckets ret-bucket:nth-child(2n+0) {
+      background: #1c2b39
+    }
+    .ret-buckets ret-bucket:nth-child(2n+1) {
+      background: #203141;
+    }
+    .ret-header {
+      padding: 1em 2.5em;
+      background: #182531;    
+      color:  #f6f7f8;
+      font-size: 1.625em;
+      font-weight: 700;      
     }
   `],
   template: `
-    <ret-participants></ret-participants>
-    <div class="buckets-container">
-     <ret-bucket *ngFor="let bucket of buckets" [name]="bucket.name" [id]="bucket.id"></ret-bucket>
+    <header class="ret-header">
+        <h1>eSky retrospective</h1>
+    </header>
+    <div class="ret-buckets">
+      <ret-bucket *ngFor="let bucket of buckets" [name]="bucket.name" [id]="bucket.id"></ret-bucket>
     </div>
   `
 })
