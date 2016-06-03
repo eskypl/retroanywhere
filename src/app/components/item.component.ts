@@ -163,7 +163,6 @@ export class ItemComponent {
         case "SELECT": this.stepStrategy = new SelectStepStrategy(this.fb, this.uid); break;
         default: this.stepStrategy = new AddItemStepStrategy(this.fb, this.uid)
       }
-      console.log(snapshot.val() + 'change strategy to: ' + this.stepStrategy.name);
     });
   }
 
