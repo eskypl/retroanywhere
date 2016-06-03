@@ -4,10 +4,11 @@ import {FirebaseService} from '../services/firebase.service';
 import {ParticipantsComponent} from './participants.component';
 import {BucketComponent} from './bucket.component';
 import {ActionListComponent} from './action-list.component';
+import {StepService} from '../services/step.service';
 
 @Component({
   selector: 'ret-app',
-  providers: [FirebaseService],
+  providers: [FirebaseService, StepService],
   directives: [ParticipantsComponent, BucketComponent,ActionListComponent],
   styles: [`
     :host {
@@ -48,9 +49,11 @@ import {ActionListComponent} from './action-list.component';
   template: `
     <header class="ret-header">
       <h1>eSky retrospective</h1>
+      <div><a *ngFor="let step of stepService.steps" 
+        (click)="stepService.goToStep(step.key)">/{{step.value}}</a></div>
       <ret-participants></ret-participants>
     </header>
-    <div class="ret-buckets" [hidden]="step===2">
+    <div class="ret-buckets" [hidden]="hideBuckets" >
       <ret-bucket *ngFor="let bucket of buckets" 
         [name]="bucket.name" 
         [color]="bucket.color" 
@@ -58,19 +61,13 @@ import {ActionListComponent} from './action-list.component';
         [id]="bucket.id">
       </ret-bucket>
     </div>
-    <div [hidden]="step===1"><ret-action-list></ret-action-list></div>
+    <div [hidden]="hideActions"><ret-action-list></ret-action-list></div>
   `
 })
 export class AppComponent {
-  steps = {ADD_ITEMS: "Add items",
-    VOTE: "Vote",
-    SELECT_ITEMS: "Select items",
-    ADD_ACTIONS: "Add actions"}
-    
   buckets = [];
-  step = steps[0];
 
-  constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
+  constructor(private fb: FirebaseService, private ref: ChangeDetectorRef, private stepService: StepService) {}
 
   ngOnInit() {
     this.fb.ref('buckets').once('value').then((snapshot)=>{
@@ -86,11 +83,13 @@ export class AppComponent {
     });
   };
   
-  nextStep(){
-    this.step++;
+  get hideBuckets(){
+      return(this.stepService.currentStepKey === 'ADD_ACTION');
+  }
+    
+  get hideActions(){
+      return(this.stepService.currentStepKey !== 'ADD_ACTIONS');
   }
   
-  prevStep(){
-    this.step--;
-  }
+
 }
