@@ -37,7 +37,10 @@ export class BucketComponent {
 
   ngOnInit() {
     this._items.on('child_added', (snapshot) => {
-      this.itemUids.push(snapshot.key);
+      var item = snapshot.val()
+      if(item.bucket === this.id){
+        this.itemUids.push(snapshot.key);
+      }
       this.ref.detectChanges();
     });
   }
