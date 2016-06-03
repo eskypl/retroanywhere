@@ -58,7 +58,13 @@ import {FirebaseService} from '../services/firebase.service';
     .ret-item-voting.has-votes {
       visibility: visible;
     }
+    .ret-vote-actions {
+      visibility: hidden;
+    }
     :host(:hover) .ret-item-voting {
+      visibility: visible;
+    }
+    :host(:hover) .ret-vote-actions {
       visibility: visible;
     }
     .ret-vote-actions button {
