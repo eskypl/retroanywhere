@@ -15,6 +15,11 @@ import {FirebaseService} from '../services/firebase.service';
       overflow: hidden;
       color: #182531;
     }
+    :host-context(.not-VOTE) .ret-vote-actions,
+    :host-context(.not-VOTE) .ret-item-voting {
+      visibility: hidden !important;
+    }
+    
     textarea {
       border: none;
       outline: none;

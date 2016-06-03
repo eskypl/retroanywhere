@@ -54,7 +54,7 @@ export class NavigationComponent {
   ) {}
 
   ngOnInit() {
-    this.steps.activeStep.then(snapshot => {
+    this.steps.getActiveStep(snapshot => {
       this.activeStep = this.steps.getStep(snapshot.val());
       this.ref.detectChanges();
     });

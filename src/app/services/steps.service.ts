@@ -9,6 +9,8 @@ enum STEPS {
 
 @Injectable()
 export class StepsService {
+  initialStep = STEPS.ADD_ITEMS[STEPS.ADD_ITEMS];
+
   constructor(
     private fb:FirebaseService
   ) {}

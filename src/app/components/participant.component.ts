@@ -11,6 +11,9 @@ import {FirebaseService} from '../services/firebase.service';
       align-items: center;
       margin-left: 48px;
     }
+    :host-context(.not-VOTE) .votes {
+      display: none;
+    }
     img {
       width: 60px;
       height: 60px;
@@ -32,14 +35,13 @@ import {FirebaseService} from '../services/firebase.service';
     <img [src]="participant.photoURL"/>
     <div>
       <div class="name">{{participant.name}}</div>
-      <div *ngIf="showVotes" class="votes">{{votes}} {{votesPostfix}}</div>
+      <div class="votes">{{votes}} {{votesPostfix}}</div>
     </div>   
   `
 })
 export class ParticipantComponent {
   @Input() participant;
   votes: number;
-  currentStepKey = "ADD_ITEMS";
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
 
@@ -48,18 +50,9 @@ export class ParticipantComponent {
       this.votes = snapshot.val() || 0;
       this.ref.detectChanges();
     });
-
-    this.fb.ref('step').on('value', (snapshot)=>{
-      this.currentStepKey = snapshot.val();
-      this.ref.detectChanges();
-    });
   }
 
   get votesPostfix() {
     return this.votes === 1 ? 'vote' : 'votes';
-  }
-
-  get showVotes() {
-    return this.currentStepKey === 'VOTE';
   }
 }
