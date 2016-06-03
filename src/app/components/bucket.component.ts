@@ -47,12 +47,13 @@ declare var firebase: any;
       position: relative;
       top: -.9375rem;
       font-size: 1.25rem;
+      margin-right: 1rem;
     }
     .ret-bucket-name .icon::before {
       position: relative;
       top: .9375rem;
     }
-    .ret-items .icon {
+    .ret-item-add .icon {
       display: inline-block;
       width: 4.375rem;
       height: 4.375rem;
@@ -62,7 +63,7 @@ declare var firebase: any;
       position: relative;
       font-size: 2.313rem;
     }
-    .ret-items .icon::before {
+    .ret-item-add .icon::before {
       position:relative;
       top: .938rem;
     }
