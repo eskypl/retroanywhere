@@ -101,7 +101,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
   `],
   template: `
-    <div [ngClass]="{'ret-item-voting': true, 'has-votes': showVotes}">
+    <div *ngIf="showItemVoting" [ngClass]="{'ret-item-voting': true, 'has-votes': showVotes}">
         <span class="ret-vote-count">{{myVotes}} <span class="sufix">votes</span></span>
         <div class="ret-vote-actions">
             <button *ngIf="showUnvoteButton" (click)="removeVote()"><span class="icon icon-minus_2"></span></button> 
@@ -121,6 +121,7 @@ export class ItemComponent {
   text: string;
   isEditedBy = null;
   myVotes;
+  currentStepKey = "ADD_ITEMS";
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
 
@@ -137,6 +138,11 @@ export class ItemComponent {
 
     this.fb.ref(`items/${this.uid}/votes/${this.fb.currentUser.uid}`).on('value', (snapshot) => {
       this.myVotes = snapshot.val();
+      this.ref.detectChanges();
+    });
+
+    this.fb.ref('step').on('value', (snapshot)=>{
+      this.currentStepKey = snapshot.val();
       this.ref.detectChanges();
     });
   }
@@ -196,6 +202,10 @@ export class ItemComponent {
       }
       return votes;
     });
+  }
+
+  get showItemVoting() {
+    return this.currentStepKey === 'VOTE';
   }
 
   get showVotes() {
