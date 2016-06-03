@@ -5,7 +5,19 @@ import {FirebaseService} from '../services/firebase.service';
   selector: 'ret-my-mail',
   styles: [`
     .email {
+    display: inline-block;
+      cursor: pointer;
       color: #a06060;
+      border: 2px solid #ffffff;
+      border-radius: 8px;
+      padding: 4px;
+      transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 1s ease;
+    }
+    .email:hover {
+      transform: scale(1.2) rotate(-3deg);
+      border-color: #ffa000;
+      background-color: #ffffd0;
+      box-shadow: 3px 3px 3px 0px #cccccc;
     }
   `],
   template: `
