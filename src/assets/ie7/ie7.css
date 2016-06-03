@@ -1,6 +1,12 @@
 .icon-stop {
     *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe907;');
 }
+.icon-minus_2 {
+    *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe908;');
+}
+.icon-plus_2 {
+    *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe909;');
+}
 .icon-check {
     *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe900;');
 }

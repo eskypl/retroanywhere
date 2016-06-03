@@ -42,9 +42,61 @@ import {FirebaseService} from '../services/firebase.service';
       float: left;
       margin-right: .625rem;
     }
+    .ret-item-voting {
+      visibility: hidden;
+      min-height: 2.875rem;
+      max-height: 2.875rem;
+      line-height: 2.875rem;
+      background-color: rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .ret-item-voting.has-votes {
+      visibility: visible;
+    }
+    :host(:hover) .ret-item-voting {
+      visibility: visible;
+    }
+    .ret-vote-actions button {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      margin: 0 0 0 .5rem;
+      max-height: 1.625rem;
+    }
+    .ret-vote-actions .icon {
+      display: inline-block;
+      border-radius: 50%;
+      background-color: #fff;
+      color: #1c2b39;
+      font-size: 1.625rem;
+    }
+    .ret-vote-count {
+      margin-left: 1rem;
+      font-size: 1.375rem;
+      font-weight: bold;
+    }
+    .ret-vote-count .sufix {
+      font-weight: 400;
+      font-size: .875rem;
+    }
+    .ret-item-voting:not(.has-votes) .ret-vote-count {
+      opacity: .2;
+    }
+    .ret-vote-actions {
+      position: absolute;
+      top: .425rem;
+      right: 1rem;
+      max-height: 1.625rem;
+    }
   `],
   template: `
-    <div><button *ngIf="showUnvoteButton" (click)="removeVote()">MINUS</button> <span *ngIf="showVotes">My votes: {{myVotes}}</span> <button (click)="addVote()">PLUS</button></div>
+    <div [ngClass]="{'ret-item-voting': true, 'has-votes': showVotes}">
+        <span class="ret-vote-count">{{myVotes}} <span class="sufix">votes</span></span>
+        <div class="ret-vote-actions">
+            <button *ngIf="showUnvoteButton" (click)="removeVote()"><span class="icon icon-minus_2"></span></button> 
+            <button (click)="addVote()"><span class="icon icon-plus_2"></span></button>
+        </div>
+    </div>
     <textarea [ngModel]="text" (ngModelChange)="updateText($event)" (focus)="onFocus()" (blur)="onBlur()"></textarea>
     <div class="edited-by-section">
       <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
