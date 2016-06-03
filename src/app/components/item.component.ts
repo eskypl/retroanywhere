@@ -120,7 +120,7 @@ export class ItemComponent {
   @Input() uid;
   text: string;
   isEditedBy = null;
-  myVotes;
+  myVotes = 0;
   currentStepKey = "ADD_ITEMS";
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
@@ -137,7 +137,7 @@ export class ItemComponent {
     });
 
     this.fb.ref(`items/${this.uid}/votes/${this.fb.currentUser.uid}`).on('value', (snapshot) => {
-      this.myVotes = snapshot.val();
+      this.myVotes = snapshot.val() || 0;
       this.ref.detectChanges();
     });
 

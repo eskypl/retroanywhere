@@ -1,7 +1,6 @@
 @import "assets/style.css";
 
 html, body {
-  height: 100%;
   margin: 0;
   padding: 0;
   font-family: 'Ubuntu', 'Arial', 'Helvetica', sans-serif;
