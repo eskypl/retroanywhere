@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'eSKY';
-    src:    url('fonts/eSKY.eot?c360xb');
-    src:    url('fonts/eSKY.eot?c360xb#iefix') format('embedded-opentype'),
-        url('fonts/eSKY.ttf?c360xb') format('truetype'),
-        url('fonts/eSKY.woff?c360xb') format('woff'),
-        url('fonts/eSKY.svg?c360xb#eSKY') format('svg');
+    src:    url('fonts/eSKY.eot?n1cwa7');
+    src:    url('fonts/eSKY.eot?n1cwa7#iefix') format('embedded-opentype'),
+        url('fonts/eSKY.ttf?n1cwa7') format('truetype'),
+        url('fonts/eSKY.woff?n1cwa7') format('woff'),
+        url('fonts/eSKY.svg?n1cwa7#eSKY') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -26,6 +26,12 @@
 
 .icon-stop:before {
     content: "\e907";
+}
+.icon-left:before {
+    content: "\e90a";
+}
+.icon-right:before {
+    content: "\e90b";
 }
 .icon-minus_2:before {
     content: "\e908";

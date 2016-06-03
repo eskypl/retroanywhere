@@ -14,6 +14,8 @@
 	}
 	var icons = {
 		'icon-stop': '&#xe907;',
+		'icon-left': '&#xe90a;',
+		'icon-right': '&#xe90b;',
 		'icon-minus_2': '&#xe908;',
 		'icon-plus_2': '&#xe909;',
 		'icon-check': '&#xe900;',

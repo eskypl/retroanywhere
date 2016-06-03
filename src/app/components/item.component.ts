@@ -101,7 +101,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
   `],
   template: `
-    <div *ngIf="stepStrategy.showVotes" 
+    <div *ngIf="stepStrategy.showVotes || stepStrategy.showItemVoting" 
       [ngClass]="{'ret-item-voting': true, 'has-votes': stepStrategy.showVotes}">
         <span class="ret-vote-count">{{stepStrategy.votes}} 
         <span class="sufix">votes</span></span>
@@ -128,6 +128,7 @@ export class ItemComponent {
   text: string;
   isEditedBy = null;
   stepStrategy: any;
+
   currentStepKey = "ADD_ITEMS";
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {

@@ -4,21 +4,26 @@ import {FirebaseService} from '../services/firebase.service';
 import {ParticipantsComponent} from './participants.component';
 import {BucketComponent} from './bucket.component';
 import {ActionListComponent} from './action-list.component';
+import {NavigationComponent} from './navigation.component';
+import {StepsService} from '../services/steps.service';
 
 @Component({
   selector: 'ret-app',
-  providers: [FirebaseService],
-  directives: [ParticipantsComponent, BucketComponent,ActionListComponent],
+  providers: [FirebaseService, StepsService],
+  directives: [ParticipantsComponent, BucketComponent,ActionListComponent, NavigationComponent],
   styles: [`
     :host {
       height: 100%;
+      min-width: 1920px;
       display: flex;
       flex-direction: column;
+      
     }
     .ret-buckets {
       flex-grow: 1;
       display: flex;
       flex-direction: row;
+      z-index: 1;
     }
     .ret-buckets ret-bucket:nth-child(2n+0) {
       background: #1c2b39
@@ -41,33 +46,47 @@ import {ActionListComponent} from './action-list.component';
       font-weight: 700;
       background: transparent url('https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Flogo.png?alt=media&token=3fdf1c57-b7d5-4141-a92b-476578936495') no-repeat;
     }
+    .ret-step {
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 4.575rem;
+      margin-bottom: -.2rem;
+    }
     ret-participants {
       flex-grow: 1;
     }
   `],
   template: `
     <header class="ret-header">
-      <h1>eSky retrospective</h1>
-      <div><a *ngFor="let step of steps" 
-        (click)="goToStep(step.key)">/{{step.value}}</a></div>
+      <h1>eSky retrospective</h1> 
+      <span class="ret-step">&nbsp;&nbsp;-&nbsp;&nbsp;{{stepName}}</span>
       <ret-participants></ret-participants>
     </header>
-    <div [ngClass]="{hidden: hideBuckets, 'ret-buckets': true}" >
-      <ret-bucket *ngFor="let bucket of buckets" 
-        [name]="bucket.name" 
-        [color]="bucket.color" 
-        [icon]="bucket.icon" 
-        [id]="bucket.id">
-      </ret-bucket>
-    </div>
-    <div [hidden]="currentStepKey !== 'ADD_ACTIONS'"><ret-action-list></ret-action-list></div>
+    
+    <section class="{{currentStepKey}}">
+      <div [ngClass]="{hidden: hideBuckets, 'ret-buckets': true}" >
+        <ret-bucket *ngFor="let bucket of buckets" 
+          [name]="bucket.name" 
+          [color]="bucket.color" 
+          [icon]="bucket.icon" 
+          [id]="bucket.id">
+        </ret-bucket>
+      </div>
+      
+      <ret-navigation></ret-navigation>
+      <div [hidden]="currentStepKey !== 'ADD_ACTIONS'"><ret-action-list></ret-action-list></div>
+    </section>
   `
 })
 export class AppComponent {
   buckets = [];
   currentStepKey = "ADD_ITEMS";
 
-  constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
+  constructor(
+    private fb:FirebaseService,
+    private steps:StepsService,
+    private ref:ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.fb.ref('buckets').once('value').then((snapshot)=>{
@@ -81,24 +100,18 @@ export class AppComponent {
 
       this.ref.detectChanges();
     });
-    
-    
-    this.fb.ref('step').on('value', (snapshot)=>{
+
+    this.steps.getActiveStep(snapshot => {
       this.currentStepKey = snapshot.val();
       this.ref.detectChanges();
     });
   };
-  
-  goToStep(step){
-    this.fb.ref('step').set(step);
+
+  get stepName() {
+    return this.steps.getStepName(this.currentStepKey);
   }
-  
+
   get hideBuckets(){
     return this.currentStepKey === 'ADD_ACTIONS';
   }
-  
-  steps = [{key: "ADD_ITEMS", value: "Add items"},
-    {key: "VOTE", value: "Vote"},
-    {key: "SELECT", value: "Select items"},
-    {key: "ADD_ACTIONS", value: "Add actions"}]; 
 }
