@@ -1,6 +1,3 @@
-require('file?name=index.html!./index.html');
-require('file?name=index.css!./index.css');
-
 import {bootstrap} from '@angular/platform-browser-dynamic';
 
 import {AppComponent} from './app/components/app.component';
