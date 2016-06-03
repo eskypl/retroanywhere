@@ -13,9 +13,8 @@ declare var firebase: any;
     :host {
       display: block;
       flex-grow: 1;
-      border: 1px solid black;
-      padding: 16px;
-      margin-top: 4px;
+      padding: 1em 2.5em;
+      color:#f6f7f8;
     }
   `],
   template: `

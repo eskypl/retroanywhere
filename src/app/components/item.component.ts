@@ -7,14 +7,18 @@ import {FirebaseService} from '../services/firebase.service';
   styles: [`
     :host {
       display: inline-block;
-      border: 1px solid black;
-      padding: 4px;
-      margin-left: 4px;      
+      margin: 1.25em 1.25em 0 0;
+      background: #ffff8d;
+      border-radius: 3px;
     }
     textarea {
-      width: 160px;
-      height: 80px;
       border: none;
+      outline: none;
+      background: transparent;
+      color: #182531;
+      padding: 2em;
+      font-family: 'Ubuntu', sans-serif;
+      font-weight: bold;
     }
   `],
   template: `
