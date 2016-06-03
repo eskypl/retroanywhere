@@ -35,20 +35,54 @@ declare var firebase: any;
       cursor: pointer;
     }
     .ret-bucket-name {
-      margin: 0 auto;
+      text-align: center;
+      line-height: 3.125rem;
+    }
+    .ret-bucket-name .icon {
+      display: inline-block;
+      width: 3.125rem;
+      height: 3.125rem;
+      border-radius: 50%;
+      background-color: #303b46;
+      position: relative;
+      top: -.9375rem;
+      font-size: 1.25rem;
+    }
+    .ret-bucket-name .icon::before {
+      position: relative;
+      top: .9375rem;
+    }
+    .ret-items .icon {
+      display: inline-block;
+      width: 4.375rem;
+      height: 4.375rem;
+      border-radius: 50%;
+      background-color: #1c2b39;
+      color: #fff;
+      position: relative;
+      font-size: 2.313rem;
+    }
+    .ret-items .icon::before {
+      position:relative;
+      top: .938rem;
     }
   `],
   template: `
-    <h2 class="ret-bucket-name">{{name}}</h2>
+    <h2 class="ret-bucket-name">
+        <span class="icon icon-{{icon}}" [style.color]="color"></span> {{name}}
+    </h2>
     <div class="ret-items">
         <ret-item *ngFor="let uid of itemUids" [uid]="uid" [style.background]="color"></ret-item>
-        <button class="ret-item-add" (click)="addItem()">Add</button>
+        <button class="ret-item-add" (click)="addItem()">
+            <span class="icon icon-plus"></span>
+        </button>
     </div>
   `
 })
 export class BucketComponent {
   @Input() name: string;
   @Input() color: string;
+  @Input() icon: string;
   @Input() id:string = 'BucketId';
 
   itemUids:string[] = [];

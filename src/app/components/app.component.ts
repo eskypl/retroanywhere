@@ -47,6 +47,7 @@ import {BucketComponent} from './bucket.component';
       <ret-bucket *ngFor="let bucket of buckets" 
         [name]="bucket.name" 
         [color]="bucket.color" 
+        [icon]="bucket.icon" 
         [id]="bucket.id">
       </ret-bucket>
     </div>
@@ -60,10 +61,10 @@ export class AppComponent {
   ngOnInit() {
     this.fb.ref('buckets').once('value').then((snapshot)=>{
       snapshot.forEach((child) => {
+        let {name, color, icon} = child.val();
         this.buckets.push({
           id: child.key,
-          name: child.val().name,
-          color: child.val().color
+          name, color, icon
         });
       });
 
