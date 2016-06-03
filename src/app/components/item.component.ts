@@ -35,6 +35,11 @@ import {FirebaseService} from '../services/firebase.service';
       color: #182531;
       font-size: .875rem;
     }
+    .edited-by-icon {
+      position: relative;
+      top: 6px;
+      left: 3px;
+    }
     .edited-by-image {
       width: 2.5rem;
       height: 2.5rem;
@@ -101,7 +106,7 @@ import {FirebaseService} from '../services/firebase.service';
     <div class="edited-by-section">
       <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
       {{isEditedBy?.name}}
-      <img *ngIf="isEditedBy" src="https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Ftyping.gif?alt=media&token=34999844-2023-4566-985d-08a8fa23e6dc" />
+      <img class="edited-by-icon" *ngIf="isEditedBy" src="https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Ftyping.gif?alt=media&token=34999844-2023-4566-985d-08a8fa23e6dc" />
     </div>
   `
 })
