@@ -8,13 +8,12 @@ import {ParticipantComponent} from './participant.component';
   directives: [ParticipantComponent],
   styles: [`
     :host {
-      display: block;
-      border: 1px solid black;
-      padding: 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
     }
   `],
   template: `
-    <div>Participants:</div>
     <ret-participant *ngFor="let participant of participants" [participant]="participant"></ret-participant>
   `
 })
