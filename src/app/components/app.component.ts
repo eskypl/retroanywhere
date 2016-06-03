@@ -82,6 +82,7 @@ export class AppComponent {
       this.ref.detectChanges();
     });
     
+    
     this.fb.ref('step').on('value', (snapshot)=>{
       this.currentStepKey = snapshot.val();
       this.ref.detectChanges();

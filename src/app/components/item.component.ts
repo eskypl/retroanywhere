@@ -102,7 +102,7 @@ import {FirebaseService} from '../services/firebase.service';
   `],
   template: `
     <div *ngIf="showItemVoting" [ngClass]="{'ret-item-voting': true, 'has-votes': showVotes}">
-        <span class="ret-vote-count">{{myVotes}} <span class="sufix">votes</span></span>
+        <span class="ret-vote-count">{{votesCount}} <span class="sufix">votes</span></span>
         <div class="ret-vote-actions">
             <button *ngIf="showUnvoteButton" (click)="removeVote()"><span class="icon icon-minus_2"></span></button> 
             <button (click)="addVote()"><span class="icon icon-plus_2"></span></button>
@@ -121,6 +121,7 @@ export class ItemComponent {
   text: string;
   isEditedBy = null;
   myVotes;
+  votes = 0;
   currentStepKey = "ADD_ITEMS";
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
@@ -139,6 +140,14 @@ export class ItemComponent {
     this.fb.ref(`items/${this.uid}/votes/${this.fb.currentUser.uid}`).on('value', (snapshot) => {
       this.myVotes = snapshot.val();
       this.ref.detectChanges();
+    });
+    
+    this.fb.ref(`items/${this.uid}/votes`).on('value', (snapshot) => {
+      this.votes = 0;
+      snapshot.forEach((item) => {
+        console.log(this.text + ':' + item.val());
+        this.votes +=  item.val();
+      })
     });
 
     this.fb.ref('step').on('value', (snapshot)=>{
@@ -205,14 +214,46 @@ export class ItemComponent {
   }
 
   get showItemVoting() {
-    return this.currentStepKey === 'VOTE';
+    return (this.currentStepKey === 'VOTE' || this.currentStepKey === 'SELECT');
   }
 
   get showVotes() {
-    return this.myVotes > 0;
+    if (this.currentStepKey === 'VOTE'){
+      return this.myVotes > 0;
+    }else if(this.currentStepKey === 'SELECT'){
+      return true;
+    }
+    
+  }
+  
+  get votesCount(){
+    if(this.currentStepKey === 'VOTE'){
+      return this.myVotes;
+    }else if(this.currentStepKey === 'SELECT'){
+      return this.votes;
+    }
   }
 
   get showUnvoteButton() {
     return this.myVotes > 0;
+  }
+}
+
+class voteStep(){
+  votes = 0;
+  
+  get showVotes(){
+    return true;
+  }
+  
+  get votes(){
+    
+  }
+  constructor(private fb:any, private uid: String, private currentUser: any){
+    //observe only users votes;
+    this.fb.ref(`items/${this.uid}/votes/${this.fb.currentUser.uid}`).on('value', (snapshot) => {
+      this.votes = snapshot.val();
+      this.ref.detectChanges();
+    });
   }
 }
