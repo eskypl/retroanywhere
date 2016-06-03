@@ -3,11 +3,12 @@ import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {FirebaseService} from '../services/firebase.service';
 import {ParticipantsComponent} from './participants.component';
 import {BucketComponent} from './bucket.component';
+import {ActionListComponent} from './action-list.component';
 
 @Component({
   selector: 'ret-app',
   providers: [FirebaseService],
-  directives: [ParticipantsComponent, BucketComponent],
+  directives: [ParticipantsComponent, BucketComponent,ActionListComponent],
   styles: [`
     :host {
       height: 100%;
@@ -43,17 +44,24 @@ import {BucketComponent} from './bucket.component';
     <header class="ret-header">
         <h1>eSky retrospective</h1>
     </header>
-    <div class="ret-buckets">
+    <div class="ret-buckets" [hidden]="step===2">
       <ret-bucket *ngFor="let bucket of buckets" 
         [name]="bucket.name" 
         [color]="bucket.color" 
         [id]="bucket.id">
       </ret-bucket>
     </div>
+    <div [hidden]="step===1"><ret-action-list></ret-action-list></div>
   `
 })
 export class AppComponent {
+  steps = {ADD_ITEMS: "Add items",
+    VOTE: "Vote",
+    SELECT_ITEMS: "Select items",
+    ADD_ACTIONS: "Add actions"}
+    
   buckets = [];
+  step = steps[0];
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
 
@@ -70,4 +78,12 @@ export class AppComponent {
       this.ref.detectChanges();
     });
   };
+  
+  nextStep(){
+    this.step++;
+  }
+  
+  prevStep(){
+    this.step--;
+  }
 }
