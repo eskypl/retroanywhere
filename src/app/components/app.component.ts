@@ -42,6 +42,7 @@ import {BucketComponent} from './bucket.component';
   template: `
     <header class="ret-header">
         <h1>eSky retrospective</h1>
+        <ret-participants></ret-participants>
     </header>
     <div class="ret-buckets">
       <ret-bucket *ngFor="let bucket of buckets" 

@@ -25,7 +25,11 @@ export class ParticipantsComponent {
 
   ngOnInit() {
     this.fb.ref('participants').on('child_added', (snapshot) => {
-      this.participants.push(snapshot.val());
+      this.participants.push({
+        uid: snapshot.key,
+        name: snapshot.val().name,
+        photoURL: snapshot.val().photoURL
+      });
       this.ref.detectChanges();
     });
   }
