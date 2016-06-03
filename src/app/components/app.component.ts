@@ -27,6 +27,8 @@ import {ActionListComponent} from './action-list.component';
       background: #203141;
     }
     .ret-header {
+      display: flex;
+      flex-direction: row;
       padding: 1rem 2.5rem;
       background: #182531;    
       color:  #f6f7f8;
@@ -39,15 +41,20 @@ import {ActionListComponent} from './action-list.component';
       font-weight: 700;
       background: transparent url('https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Flogo.png?alt=media&token=3fdf1c57-b7d5-4141-a92b-476578936495') no-repeat;
     }
+    ret-participants {
+      flex-grow: 1;
+    }
   `],
   template: `
     <header class="ret-header">
-        <h1>eSky retrospective</h1>
+      <h1>eSky retrospective</h1>
+      <ret-participants></ret-participants>
     </header>
     <div class="ret-buckets" [hidden]="step===2">
       <ret-bucket *ngFor="let bucket of buckets" 
         [name]="bucket.name" 
         [color]="bucket.color" 
+        [icon]="bucket.icon" 
         [id]="bucket.id">
       </ret-bucket>
     </div>
@@ -68,10 +75,10 @@ export class AppComponent {
   ngOnInit() {
     this.fb.ref('buckets').once('value').then((snapshot)=>{
       snapshot.forEach((child) => {
+        let {name, color, icon} = child.val();
         this.buckets.push({
           id: child.key,
-          name: child.val().name,
-          color: child.val().color
+          name, color, icon
         });
       });
 

@@ -48,8 +48,8 @@ import {FirebaseService} from '../services/firebase.service';
     <textarea [ngModel]="text" (ngModelChange)="updateText($event)" (focus)="onFocus()" (blur)="onBlur()"></textarea>
     <div class="edited-by-section">
       <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
+      {{isEditedBy?.name}}
       <img *ngIf="isEditedBy" src="https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Ftyping.gif?alt=media&token=34999844-2023-4566-985d-08a8fa23e6dc" />
-      {{isEditedBy?.name || 'nobody'}} is typing...
     </div>
   `
 })
@@ -97,6 +97,7 @@ export class ItemComponent {
 
   addVote() {
     let userUid = this.fb.currentUser.uid;
+
     this.fb.ref(`items/${this.uid}/votes`).transaction((votes) => {
       if(!votes[userUid]) {
         votes[userUid] = 1;
@@ -105,13 +106,30 @@ export class ItemComponent {
       }
       return votes;
     });
+
+    this.fb.ref(`votes/${userUid}`).transaction((votes) => {
+      if(!votes) {
+        votes = 1;
+      } else {
+        votes += 1;
+      }
+      return votes;
+    });
   }
 
   removeVote() {
     let userUid = this.fb.currentUser.uid;
+
     this.fb.ref(`items/${this.uid}/votes`).transaction((votes) => {
       if (votes[userUid] >= 1) {
         votes[userUid] -= 1;
+      }
+      return votes;
+    });
+
+    this.fb.ref(`votes/${userUid}`).transaction((votes) => {
+      if(votes >= 1) {
+        votes -= 1;
       }
       return votes;
     });
