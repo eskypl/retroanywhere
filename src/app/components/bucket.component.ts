@@ -20,14 +20,14 @@ declare var firebase: any;
   `],
   template: `
     <div>{{name}}</div>
-    <ret-item *ngFor="let item of items"></ret-item>
+    <ret-item *ngFor="let uid of itemUids" [uid]="uid"></ret-item>
     <button (click)="addItem()">Add</button>
   `
 })
 export class BucketComponent {
   @Input() name: string;
   id:string = 'BucketId';
-  items:any[] = [];
+  itemUids:string[] = [];
   private _items:any = this.fb.ref('items');
 
   constructor(
@@ -36,8 +36,8 @@ export class BucketComponent {
   ) {}
 
   ngOnInit() {
-    this._items.on('child_added', snapshot => {
-      this.items.push(snapshot.val());
+    this._items.on('child_added', (snapshot) => {
+      this.itemUids.push(snapshot.key);
       this.ref.detectChanges();
     });
   }
@@ -45,7 +45,7 @@ export class BucketComponent {
   addItem() {
     this._items.push({
       bucket: this.id,
-      name: 'Item'
+      text: ''
     });
   }
 }
