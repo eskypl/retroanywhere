@@ -30,6 +30,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
   `],
   template: `
+    <div><button *ngIf="showUnvoteButton" (click)="removeVote()">MINUS</button> My votes: {{myVotes}} <button (click)="addVote()">PLUS</button></div>
     <textarea [ngModel]="text" (ngModelChange)="updateText($event)" (focus)="onFocus()" (blur)="onBlur()"></textarea>
     <div class="edited-by-section">Edited by: <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/> {{isEditedBy?.name || 'Nobody'}}</div>
   `
@@ -38,6 +39,7 @@ export class ItemComponent {
   @Input() uid;
   text: string;
   isEditedBy = null;
+  myVotes;
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
 
@@ -49,6 +51,11 @@ export class ItemComponent {
 
     this.fb.ref(`items/${this.uid}/isEditedBy`).on('value', (snapshot) => {
       this.isEditedBy = snapshot.val();
+      this.ref.detectChanges();
+    });
+
+    this.fb.ref(`items/${this.uid}/votes/${this.fb.currentUser.uid}`).on('value', (snapshot) => {
+      this.myVotes = snapshot.val();
       this.ref.detectChanges();
     });
   }
@@ -68,5 +75,31 @@ export class ItemComponent {
 
   onBlur() {
     this.fb.ref(`items/${this.uid}/isEditedBy`).set(null);
+  }
+
+  addVote() {
+    let userUid = this.fb.currentUser.uid;
+    this.fb.ref(`items/${this.uid}/votes`).transaction((votes) => {
+      if(!votes[userUid]) {
+        votes[userUid] = 1;
+      } else {
+        votes[userUid] += 1;
+      }
+      return votes;
+    });
+  }
+
+  removeVote() {
+    let userUid = this.fb.currentUser.uid;
+    this.fb.ref(`items/${this.uid}/votes`).transaction((votes) => {
+      if (votes[userUid] >= 1) {
+        votes[userUid] -= 1;
+      }
+      return votes;
+    });
+  }
+
+  get showUnvoteButton() {
+    return this.myVotes > 0;
   }
 }

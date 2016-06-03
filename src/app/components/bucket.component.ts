@@ -26,7 +26,7 @@ declare var firebase: any;
 export class BucketComponent {
   @Input() name: string;
   @Input() id:string = 'BucketId';
-  
+
   itemUids:string[] = [];
   private _items:any = this.fb.ref('items');
 
@@ -48,7 +48,10 @@ export class BucketComponent {
   addItem() {
     this._items.push({
       bucket: this.id,
-      text: ''
+      text: '',
+      votes: {
+        [this.fb.currentUser.uid]: 0
+      }
     });
   }
 }
