@@ -72,9 +72,11 @@ import {StepsService} from '../services/steps.service';
           [id]="bucket.id">
         </ret-bucket>
       </div>
+      <div [hidden]="currentStepKey !== 'ADD_ACTIONS'">
+        <ret-action-list></ret-action-list>
+      </div>
       
       <ret-navigation></ret-navigation>
-      <div [hidden]="currentStepKey !== 'ADD_ACTIONS'"><ret-action-list></ret-action-list></div>
     </section>
   `
 })

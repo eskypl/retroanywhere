@@ -15,9 +15,31 @@ import {FirebaseService} from '../services/firebase.service';
       overflow: hidden;
       color: #182531;
     }
-    :host-context(.not-VOTE) .ret-vote-actions,
+    
+    /* general */
+    /* this should disable items with 0 votes
+     * on select step, however stepsStrategy adds
+     * has-votes class anyway on this step, so this
+     * rule does not work as expected. */
     :host-context(.not-VOTE) .ret-item-voting {
       visibility: hidden !important;
+    }
+    
+    /* vote step */
+    :host-context(.VOTE) .ret-select {
+      display: none;
+    }
+    :host-context(.VOTE) .ret-vote-actions:hover,
+    :host-context(.VOTE) .ret-item-voting.has-votes {
+      visibility: visible;
+    }
+    
+    /* select step */
+    :host-context(.SELECT) .ret-vote-actions {
+      display: none;
+    }
+    :host-context(.SELECT) .ret-item-voting.has-votes {
+      visibility: visible !important;
     }
     
     textarea {
@@ -60,9 +82,6 @@ import {FirebaseService} from '../services/firebase.service';
       background-color: rgba(0,0,0,0.05);
       position: relative;
     }
-    .ret-item-voting.has-votes {
-      visibility: visible;
-    }
     .ret-vote-actions {
       visibility: hidden;
     }
@@ -85,6 +104,7 @@ import {FirebaseService} from '../services/firebase.service';
       background-color: #fff;
       color: #1c2b39;
       font-size: 1.625rem;
+      outline: none;
     }
     .ret-vote-count {
       margin-left: 1rem;
@@ -104,18 +124,32 @@ import {FirebaseService} from '../services/firebase.service';
       right: 1rem;
       max-height: 1.625rem;
     }
+    .ret-select {
+      display: inline-block;
+      float: left;
+      width: 1.625rem;
+      height: 1.625rem;
+      line-height: 1.625rem;
+      background: #fff;
+      border-radius: 3px;
+      margin: .625rem 0 .625rem 1rem;
+      color: #1da023;
+      text-align: center;
+    }
+    .ret-select input {
+      visibility: hidden;
+    }
   `],
   template: `
-    <div *ngIf="stepStrategy.showVotes || stepStrategy.showItemVoting" 
-      [ngClass]="{'ret-item-voting': true, 'has-votes': stepStrategy.showVotes}">
-        <span class="ret-vote-count">{{stepStrategy.votes}} 
-        <span class="sufix">votes</span></span>
-        <div class="ret-vote-actions">
-            <button *ngIf="stepStrategy.showUnvoteButton" (click)="removeVote()">
-            <span class="icon icon-minus_2"></span></button> 
-            <button *ngIf="stepStrategy.showItemVoting" (click)="addVote()">
-            <span class="icon icon-plus_2"></span></button>
-        </div>
+    <div [ngClass]="{'ret-item-voting': true, 'has-votes': stepStrategy.showVotes}">
+      <label [ngClass]="{'ret-select': true, 'icon-check': selected}">
+        <input [(ngModel)]="selected" type="checkbox"/>        
+      </label>    
+      <span class="ret-vote-count">{{stepStrategy.votes}} <span class="sufix">votes</span></span>
+      <div class="ret-vote-actions" *ngIf="stepStrategy.showItemVoting">
+        <button *ngIf="stepStrategy.showUnvoteButton" (click)="removeVote()"><span class="icon icon-minus_2"></span></button> 
+        <button *ngIf="stepStrategy.showItemVoting" (click)="addVote()"><span class="icon icon-plus_2"></span></button>
+      </div>
     </div>
     <textarea [ngModel]="text" (ngModelChange)="updateText($event)" 
       (focus)="onFocus()"
@@ -133,8 +167,9 @@ export class ItemComponent {
   text: string;
   isEditedBy = null;
   stepStrategy: any;
-
   currentStepKey = "ADD_ITEMS";
+
+  private _selected:boolean = false;
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {
     this.stepStrategy = new AddItemStepStrategy(this.fb, this.uid);
@@ -152,7 +187,7 @@ export class ItemComponent {
       this.isEditedBy = snapshot.val();
       this.ref.detectChanges();
     });
-    
+
     //select step
     this.fb.ref('step').on('value', (snapshot)=>{
       this.currentStepKey = snapshot.val();
@@ -163,6 +198,10 @@ export class ItemComponent {
         case "SELECT": this.stepStrategy = new SelectStepStrategy(this.fb, this.uid); break;
         default: this.stepStrategy = new AddItemStepStrategy(this.fb, this.uid)
       }
+    });
+
+    this.fb.ref(`items/${this.uid}/selected`).once('value', snapshot => {
+      this.selected = snapshot.val() || false;
     });
   }
 
@@ -223,52 +262,62 @@ export class ItemComponent {
     });
   }
 
+  get selected() {
+    return this._selected;
+  }
+
+  set selected(value) {
+    this._selected = value;
+    this.fb.ref(`items/${this.uid}/selected`).set(this._selected);
+  }
+
 }
 
 class VoteStepStrategy{
   private _votes = 0;
-  
+
   get showVotes(){
     return (this._votes > 0);
   }
-  
+
   get votes(){
     return this._votes;
   }
-  
+
   get showItemVoting(){
     return true;
   }
-  
+
   get showUnvoteButton(){
     return (this._votes > 0);
   }
-  
+
   constructor(fb, uid){
     //observe only users votes;
     fb.ref(`items/${uid}/votes/${fb.currentUser.uid}`).on('value', (snapshot) => {
-      this._votes = snapshot.val();
+      this._votes = snapshot.val() || 0;
     });
   }
-  
+
   name = 'vote';
 }
 
 class SelectStepStrategy{
   private _votes = 0;
-  
+
   get showVotes(){
-    return true;
+    // return true;
+    return (this._votes > 0);
   }
-  
+
   get votes(){
     return this._votes;
   }
-  
+
   get showItemVoting(){
     return false;
   }
-  
+
   get showUnvoteButton(){
     return false;
   }
@@ -281,30 +330,30 @@ class SelectStepStrategy{
       })
     });
   }
-  
+
   name = 'select';
 }
 
 class AddItemStepStrategy{
-  
+
   get showVotes (){
     return false;
   }
-  
+
   get votes(){
     return 0;
   }
-  
+
   get showItemVoting(){
     return false;
   }
-  
+
   get showUnvoteButton(){
     return false;
   }
-  
+
   constructor(fb, uid){
   }
-  
+
   name = 'add';
 }
