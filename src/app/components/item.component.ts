@@ -44,7 +44,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
   `],
   template: `
-    <div><button *ngIf="showUnvoteButton" (click)="removeVote()">MINUS</button> My votes: {{myVotes}} <button (click)="addVote()">PLUS</button></div>
+    <div><button *ngIf="showUnvoteButton" (click)="removeVote()">MINUS</button> <span *ngIf="showVotes">My votes: {{myVotes}}</span> <button (click)="addVote()">PLUS</button></div>
     <textarea [ngModel]="text" (ngModelChange)="updateText($event)" (focus)="onFocus()" (blur)="onBlur()"></textarea>
     <div class="edited-by-section">
       <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
@@ -115,6 +115,10 @@ export class ItemComponent {
       }
       return votes;
     });
+  }
+
+  get showVotes() {
+    return this.myVotes > 0;
   }
 
   get showUnvoteButton() {
