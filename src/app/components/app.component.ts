@@ -4,11 +4,10 @@ import {FirebaseService} from '../services/firebase.service';
 import {ParticipantsComponent} from './participants.component';
 import {BucketComponent} from './bucket.component';
 import {ActionListComponent} from './action-list.component';
-import {StepService} from '../services/step.service';
 
 @Component({
   selector: 'ret-app',
-  providers: [FirebaseService, StepService],
+  providers: [FirebaseService],
   directives: [ParticipantsComponent, BucketComponent,ActionListComponent],
   styles: [`
     :host {
@@ -49,11 +48,11 @@ import {StepService} from '../services/step.service';
   template: `
     <header class="ret-header">
       <h1>eSky retrospective</h1>
-      <div><a *ngFor="let step of stepService.steps" 
-        (click)="stepService.goToStep(step.key)">/{{step.value}}</a></div>
+      <div><a *ngFor="let step of steps" 
+        (click)="goToStep(step.key)">/{{step.value}}</a></div>
       <ret-participants></ret-participants>
     </header>
-    <div class="ret-buckets" [hidden]="hideBuckets" >
+    <div [ngClass]="{hidden: hideBuckets, 'ret-buckets': true}" >
       <ret-bucket *ngFor="let bucket of buckets" 
         [name]="bucket.name" 
         [color]="bucket.color" 
@@ -61,13 +60,14 @@ import {StepService} from '../services/step.service';
         [id]="bucket.id">
       </ret-bucket>
     </div>
-    <div [hidden]="hideActions"><ret-action-list></ret-action-list></div>
+    <div [hidden]="currentStepKey !== 'ADD_ACTIONS'"><ret-action-list></ret-action-list></div>
   `
 })
 export class AppComponent {
   buckets = [];
+  currentStepKey = "ADD_ITEMS";
 
-  constructor(private fb: FirebaseService, private ref: ChangeDetectorRef, private stepService: StepService) {}
+  constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.fb.ref('buckets').once('value').then((snapshot)=>{
@@ -81,15 +81,23 @@ export class AppComponent {
 
       this.ref.detectChanges();
     });
+    
+    this.fb.ref('step').on('value', (snapshot)=>{
+      this.currentStepKey = snapshot.val();
+      this.ref.detectChanges();
+    });
   };
   
-  get hideBuckets(){
-      return(this.stepService.currentStepKey === 'ADD_ACTION');
-  }
-    
-  get hideActions(){
-      return(this.stepService.currentStepKey !== 'ADD_ACTIONS');
+  goToStep(step){
+    this.fb.ref('step').set(step);
   }
   
-
+  get hideBuckets(){
+    return this.currentStepKey === 'ADD_ACTIONS';
+  }
+  
+  steps = [{key: "ADD_ITEMS", value: "Add items"},
+    {key: "VOTE", value: "Vote"},
+    {key: "SELECT", value: "Select items"},
+    {key: "ADD_ACTIONS", value: "Add actions"}]; 
 }
