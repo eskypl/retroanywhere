@@ -44,15 +44,16 @@ import {BucketComponent} from './bucket.component';
 })
 export class AppComponent {
   buckets = [];
-  
+
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.fb.ref('buckets').once('value').then((snapshot)=>{
-      snapshot.forEach((child) => { 
-        console.log();
+      snapshot.forEach((child) => {
         this.buckets.push({id: child.key, name: child.val().name});
       });
+
+      this.ref.detectChanges();
     });
   };
 }
