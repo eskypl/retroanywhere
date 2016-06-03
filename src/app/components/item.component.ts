@@ -101,14 +101,21 @@ import {FirebaseService} from '../services/firebase.service';
     }
   `],
   template: `
-    <div *ngIf="showItemVoting" [ngClass]="{'ret-item-voting': true, 'has-votes': showVotes}">
-        <span class="ret-vote-count">{{votesCount}} <span class="sufix">votes</span></span>
+    <div *ngIf="stepStrategy.showVotes" 
+      [ngClass]="{'ret-item-voting': true, 'has-votes': stepStrategy.showVotes}">
+        <span class="ret-vote-count">{{stepStrategy.votes}} 
+        <span class="sufix">votes</span></span>
         <div class="ret-vote-actions">
-            <button *ngIf="showUnvoteButton" (click)="removeVote()"><span class="icon icon-minus_2"></span></button> 
-            <button (click)="addVote()"><span class="icon icon-plus_2"></span></button>
+            <button *ngIf="stepStrategy.showUnvoteButton" (click)="removeVote()">
+            <span class="icon icon-minus_2"></span></button> 
+            <button *ngIf="stepStrategy.showItemVoting" (click)="addVote()">
+            <span class="icon icon-plus_2"></span></button>
         </div>
     </div>
-    <textarea [ngModel]="text" (ngModelChange)="updateText($event)" (focus)="onFocus()" (blur)="onBlur()"></textarea>
+    <textarea [ngModel]="text" (ngModelChange)="updateText($event)" 
+      (focus)="onFocus()"
+      (blur)="onBlur()">
+    </textarea>
     <div class="edited-by-section">
       <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
       {{isEditedBy?.name}}
@@ -120,39 +127,37 @@ export class ItemComponent {
   @Input() uid;
   text: string;
   isEditedBy = null;
-  myVotes;
-  votes = 0;
+  stepStrategy: any;
   currentStepKey = "ADD_ITEMS";
 
-  constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {}
+  constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {
+    this.stepStrategy = new AddItemStepStrategy(this.fb, this.uid);
+  }
 
   ngOnInit() {
+    //observe text
     this.fb.ref(`items/${this.uid}/text`).on('value', (snapshot) => {
       this.text = snapshot.val();
       this.ref.detectChanges();
     });
 
+    //observe edit
     this.fb.ref(`items/${this.uid}/isEditedBy`).on('value', (snapshot) => {
       this.isEditedBy = snapshot.val();
       this.ref.detectChanges();
     });
-
-    this.fb.ref(`items/${this.uid}/votes/${this.fb.currentUser.uid}`).on('value', (snapshot) => {
-      this.myVotes = snapshot.val();
-      this.ref.detectChanges();
-    });
     
-    this.fb.ref(`items/${this.uid}/votes`).on('value', (snapshot) => {
-      this.votes = 0;
-      snapshot.forEach((item) => {
-        console.log(this.text + ':' + item.val());
-        this.votes +=  item.val();
-      })
-    });
-
+    //select step
     this.fb.ref('step').on('value', (snapshot)=>{
       this.currentStepKey = snapshot.val();
       this.ref.detectChanges();
+      switch(snapshot.val()){
+        case "ADD_ITEMS": this.stepStrategy = new AddItemStepStrategy(this.fb, this.uid);break;
+        case "VOTE": this.stepStrategy = new VoteStepStrategy(this.fb, this.uid);break;
+        case "SELECT": this.stepStrategy = new SelectStepStrategy(this.fb, this.uid); break;
+        default: this.stepStrategy = new AddItemStepStrategy(this.fb, this.uid)
+      }
+      console.log(snapshot.val() + 'change strategy to: ' + this.stepStrategy.name);
     });
   }
 
@@ -213,47 +218,88 @@ export class ItemComponent {
     });
   }
 
-  get showItemVoting() {
-    return (this.currentStepKey === 'VOTE' || this.currentStepKey === 'SELECT');
-  }
-
-  get showVotes() {
-    if (this.currentStepKey === 'VOTE'){
-      return this.myVotes > 0;
-    }else if(this.currentStepKey === 'SELECT'){
-      return true;
-    }
-    
-  }
-  
-  get votesCount(){
-    if(this.currentStepKey === 'VOTE'){
-      return this.myVotes;
-    }else if(this.currentStepKey === 'SELECT'){
-      return this.votes;
-    }
-  }
-
-  get showUnvoteButton() {
-    return this.myVotes > 0;
-  }
 }
 
-class voteStep(){
-  votes = 0;
+class VoteStepStrategy{
+  private _votes = 0;
+  
+  get showVotes(){
+    return (this._votes > 0);
+  }
+  
+  get votes(){
+    return this._votes;
+  }
+  
+  get showItemVoting(){
+    return true;
+  }
+  
+  get showUnvoteButton(){
+    return (this._votes > 0);
+  }
+  
+  constructor(fb, uid){
+    //observe only users votes;
+    fb.ref(`items/${uid}/votes/${fb.currentUser.uid}`).on('value', (snapshot) => {
+      this._votes = snapshot.val();
+    });
+  }
+  
+  name = 'vote';
+}
+
+class SelectStepStrategy{
+  private _votes = 0;
   
   get showVotes(){
     return true;
   }
   
   get votes(){
-    
+    return this._votes;
   }
-  constructor(private fb:any, private uid: String, private currentUser: any){
-    //observe only users votes;
-    this.fb.ref(`items/${this.uid}/votes/${this.fb.currentUser.uid}`).on('value', (snapshot) => {
-      this.votes = snapshot.val();
-      this.ref.detectChanges();
+  
+  get showItemVoting(){
+    return false;
+  }
+  
+  get showUnvoteButton(){
+    return false;
+  }
+  constructor(fb, uid){
+    //observe all votes;
+    fb.ref(`items/${uid}/votes`).on('value', (snapshot) => {
+      this._votes = 0;
+      snapshot.forEach((item) => {
+        this._votes +=  item.val();
+      })
     });
   }
+  
+  name = 'select';
+}
+
+class AddItemStepStrategy{
+  
+  get showVotes (){
+    return false;
+  }
+  
+  get votes(){
+    return 0;
+  }
+  
+  get showItemVoting(){
+    return false;
+  }
+  
+  get showUnvoteButton(){
+    return false;
+  }
+  
+  constructor(fb, uid){
+  }
+  
+  name = 'add';
 }
