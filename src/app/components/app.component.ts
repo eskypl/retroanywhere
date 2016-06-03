@@ -57,13 +57,13 @@ import {StepsService} from '../services/steps.service';
     }
   `],
   template: `
-    <header class="ret-header">
-      <h1>eSky retrospective</h1> 
-      <span class="ret-step">&nbsp;&nbsp;-&nbsp;&nbsp;{{stepName}}</span>
-      <ret-participants></ret-participants>
-    </header>
+    <section class="{{stepClass}}">
+      <header class="ret-header">
+        <h1>eSky retrospective</h1> 
+        <span class="ret-step">&nbsp;&nbsp;-&nbsp;&nbsp;{{stepName}}</span>
+        <ret-participants></ret-participants>
+      </header>
     
-    <section class="{{currentStepKey}}">
       <div [ngClass]="{hidden: hideBuckets, 'ret-buckets': true}" >
         <ret-bucket *ngFor="let bucket of buckets" 
           [name]="bucket.name" 
@@ -80,7 +80,7 @@ import {StepsService} from '../services/steps.service';
 })
 export class AppComponent {
   buckets = [];
-  currentStepKey = "ADD_ITEMS";
+  currentStepKey = this.steps.initialStep;
 
   constructor(
     private fb:FirebaseService,
@@ -109,6 +109,13 @@ export class AppComponent {
 
   get stepName() {
     return this.steps.getStepName(this.currentStepKey);
+  }
+
+  get stepClass() {
+    return Object.keys(this.steps.getSteps())
+      .filter((key:any) => isNaN(key))
+      .map(key => key === this.currentStepKey ? key : `not-${key}`)
+      .join(' ');
   }
 
   get hideBuckets(){
