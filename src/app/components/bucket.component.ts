@@ -12,19 +12,43 @@ declare var firebase: any;
   styles: [`    
     :host {
       display: block;
-      flex-grow: 1;
-      padding: 1em 2.5em;
+      min-width: 35rem;
+      padding: 1rem 2.5rem 1rem 2.5rem;
       color:#f6f7f8;
+    }
+    .ret-items {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .ret-item-add {
+      display: block;
+      margin: 1.25rem 0 0 0;
+      flex-basis: 16.875rem;
+      min-height: 10rem;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 0;
+      background: #2b465e;
+      color: #fff;
+      cursor: pointer;
+    }
+    .ret-bucket-name {
+      margin: 0 auto;
     }
   `],
   template: `
-<div>{{name}}</div>
-    <ret-item *ngFor="let uid of itemUids" [uid]="uid"></ret-item>
-    <button (click)="addItem()">Add</button>
+    <h2 class="ret-bucket-name">{{name}}</h2>
+    <div class="ret-items">
+        <ret-item *ngFor="let uid of itemUids" [uid]="uid" [style.background]="color"></ret-item>
+        <button class="ret-item-add" (click)="addItem()">Add</button>
+    </div>
   `
 })
 export class BucketComponent {
   @Input() name: string;
+  @Input() color: string;
   @Input() id:string = 'BucketId';
 
   itemUids:string[] = [];
@@ -32,12 +56,12 @@ export class BucketComponent {
 
   constructor(
       private fb:FirebaseService,
-      private ref: ChangeDetectorRef
+      private ref:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this._items.on('child_added', (snapshot) => {
-      var item = snapshot.val()
+      var item = snapshot.val();
       if(item.bucket === this.id){
         this.itemUids.push(snapshot.key);
       }

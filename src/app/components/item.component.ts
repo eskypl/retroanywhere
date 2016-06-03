@@ -6,33 +6,51 @@ import {FirebaseService} from '../services/firebase.service';
   selector: 'ret-item',
   styles: [`
     :host {
-      display: inline-block;
-      margin: 1.25em 1.25em 0 0;
-      background: #ffff8d;
+      display: block;
+      margin: 1.25rem 0 0 0;
+      flex-basis: 16.875rem;
+      min-height: 10rem;
+      background: #2b465e;
       border-radius: 3px;
+      overflow: hidden;
+      color: #182531;
     }
     textarea {
       border: none;
       outline: none;
+      box-sizing: border-box;
+      width: 100%;
+      overflow: hidden;
       background: transparent;
       color: #182531;
-      padding: 2em;
+      padding: 2rem;
       font-family: 'Ubuntu', sans-serif;
       font-weight: bold;
     }
     .edited-by-section {
-      height: 60px;
+      padding: .625rem;
+      min-height: 2.5rem;
+      max-height: 2.5rem;
+      line-height: 2.5rem;
+      color: #182531;
+      font-size: .875rem;
     }
     .edited-by-image {
-      width: 60px;
-      height: 60px;
+      width: 2.5rem;
+      height: 2.5rem;
       border-radius: 50%;
+      float: left;
+      margin-right: .625rem;
     }
   `],
   template: `
     <div><button *ngIf="showUnvoteButton" (click)="removeVote()">MINUS</button> My votes: {{myVotes}} <button (click)="addVote()">PLUS</button></div>
     <textarea [ngModel]="text" (ngModelChange)="updateText($event)" (focus)="onFocus()" (blur)="onBlur()"></textarea>
-    <div class="edited-by-section">Edited by: <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/> {{isEditedBy?.name || 'Nobody'}}</div>
+    <div class="edited-by-section">
+      <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
+      <img *ngIf="isEditedBy" src="https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Ftyping.gif?alt=media&token=34999844-2023-4566-985d-08a8fa23e6dc" />
+      {{isEditedBy?.name || 'nobody'}} is typing...
+    </div>
   `
 })
 export class ItemComponent {

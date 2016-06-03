@@ -26,11 +26,17 @@ import {BucketComponent} from './bucket.component';
       background: #203141;
     }
     .ret-header {
-      padding: 1em 2.5em;
+      padding: 1rem 2.5rem;
       background: #182531;    
       color:  #f6f7f8;
-      font-size: 1.625em;
+      font-size: 1.625rem;
       font-weight: 700;      
+    }
+    .ret-header h1 {
+      padding: 0 0 0 5rem;
+      line-height: 4.375rem;
+      font-weight: 700;
+      background: transparent url('https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Flogo.png?alt=media&token=3fdf1c57-b7d5-4141-a92b-476578936495') no-repeat;
     }
   `],
   template: `
@@ -38,7 +44,11 @@ import {BucketComponent} from './bucket.component';
         <h1>eSky retrospective</h1>
     </header>
     <div class="ret-buckets">
-      <ret-bucket *ngFor="let bucket of buckets" [name]="bucket.name" [id]="bucket.id"></ret-bucket>
+      <ret-bucket *ngFor="let bucket of buckets" 
+        [name]="bucket.name" 
+        [color]="bucket.color" 
+        [id]="bucket.id">
+      </ret-bucket>
     </div>
   `
 })
@@ -50,7 +60,11 @@ export class AppComponent {
   ngOnInit() {
     this.fb.ref('buckets').once('value').then((snapshot)=>{
       snapshot.forEach((child) => {
-        this.buckets.push({id: child.key, name: child.val().name});
+        this.buckets.push({
+          id: child.key,
+          name: child.val().name,
+          color: child.val().color
+        });
       });
 
       this.ref.detectChanges();
