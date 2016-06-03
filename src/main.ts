@@ -14,7 +14,13 @@ firebase.initializeApp({
 });
 
 firebase.auth().getRedirectResult().then(() => {
-  if (firebase.auth().currentUser) {
+  let currentUser: any = firebase.auth().currentUser;
+  if (currentUser) {
+    firebase.database().ref(`participants/${currentUser.uid}`).set({
+      name: currentUser.displayName,
+      email: currentUser.email,
+      photoURL: currentUser.photoURL
+    });
     bootstrap(AppComponent).catch(err => console.error(err));
   } else {
     firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
