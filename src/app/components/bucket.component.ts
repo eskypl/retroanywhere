@@ -1,10 +1,14 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
 
+import {FirebaseService} from '../services/firebase.service'
 import {ItemComponent} from './item.component';
+
+declare var firebase: any;
 
 @Component({
   selector: 'ret-bucket',
   directives: [ItemComponent],
+  providers: [FirebaseService],
   styles: [`    
     :host {
       display: block;
@@ -15,20 +19,34 @@ import {ItemComponent} from './item.component';
     }
   `],
   template: `
-    <div>{{bucket.name}}</div>
-    <ret-item *ngFor="let item of items"></ret-item>
+<div>{{name}}</div>
+    <ret-item *ngFor="let uid of itemUids" [uid]="uid"></ret-item>
+    <button (click)="addItem()">Add</button>
   `
 })
 export class BucketComponent {
-  @Input() bucket: Bucket;
-  items: number[] = [1, 2, 3, 4, 5, 6];
-}
+  @Input() name: string;
+  @Input() id:string = 'BucketId';
+  
+  itemUids:string[] = [];
+  private _items:any = this.fb.ref('items');
 
-export class Bucket{
-  id: string;
-  name: string;
-  constructor(id, name){
-    this.id = id;
-    this.name = name;
+  constructor(
+      private fb:FirebaseService,
+      private ref: ChangeDetectorRef
+  ) {}
+
+  ngOnInit() {
+    this._items.on('child_added', (snapshot) => {
+      this.itemUids.push(snapshot.key);
+      this.ref.detectChanges();
+    });
+  }
+
+  addItem() {
+    this._items.push({
+      bucket: this.id,
+      text: ''
+    });
   }
 }

@@ -2,7 +2,7 @@ import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 
 import {FirebaseService} from '../services/firebase.service';
 import {ParticipantsComponent} from './participants.component';
-import {BucketComponent, Bucket} from './bucket.component';
+import {BucketComponent} from './bucket.component';
 
 @Component({
   selector: 'ret-app',
@@ -24,7 +24,7 @@ import {BucketComponent, Bucket} from './bucket.component';
   template: `
     <ret-participants></ret-participants>
     <div class="buckets-container">
-     <ret-bucket *ngFor="let bucket of buckets" [bucket]="bucket"></ret-bucket>
+     <ret-bucket *ngFor="let bucket of buckets" [name]="bucket.name" [id]="bucket.id"></ret-bucket>
     </div>
   `
 })
@@ -36,8 +36,8 @@ export class AppComponent {
   ngOnInit() {
     this.fb.ref('buckets').once('value').then((snapshot)=>{
       snapshot.forEach((child) => { 
-        var b = new Bucket(child.val().id, child.val().name);
-        this.buckets.push(b);
+        console.log();
+        this.buckets.push({id: child.key, name: child.val().name});
       });
     });
   };
