@@ -15,11 +15,20 @@ import {ItemComponent} from './item.component';
     }
   `],
   template: `
-    <div>{{name}}</div>
+    <div>{{bucket.name}}</div>
     <ret-item *ngFor="let item of items"></ret-item>
   `
 })
 export class BucketComponent {
-  @Input() name: string;
+  @Input() bucket: Bucket;
   items: number[] = [1, 2, 3, 4, 5, 6];
+}
+
+export class Bucket{
+  id: string;
+  name: string;
+  constructor(id, name){
+    this.id = id;
+    this.name = name;
+  }
 }
