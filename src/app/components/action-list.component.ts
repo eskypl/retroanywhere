@@ -2,12 +2,13 @@ import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
 import {FirebaseService} from '../services/firebase.service'
 import {ActionComponent} from './action.component'
 import {SelectedItemComponent} from './selected-item.component';
+import {ParticipantsSelectorComponent} from './participants-selector.component';
 
 declare var firebase: any;
 
 @Component({
   selector: 'ret-action-list',
-  directives: [SelectedItemComponent, ActionComponent],
+  directives: [SelectedItemComponent, ActionComponent, ParticipantsSelectorComponent],
   providers: [FirebaseService],
   styles: [`
     :host {
@@ -26,14 +27,16 @@ declare var firebase: any;
     }
   `],
   template: `
-      <ret-selected-item *ngFor="let selectedItemId of selectedItemsIds" [itemId]="selectedItemId"></ret-selected-item>
+      <ret-selected-item *ngFor="let selectedItemId of selectedItemsIds" [itemId]="selectedItemId" (temmateSelector)="onSelector($event)"></ret-selected-item>
+      <ret-participants-selector *ngIf="activeAction" (close)="selectorClose()" (select)="selectorSelect($event)"></ret-participants-selector>
   `
 })
 export class ActionListComponent {
   selectedItemsIds = [];
   itemId = "ITEM_ID";
-  itemText = "Tu będzie tekst z itema";
   actionUids:string[] = [];
+  activeAction:ActionComponent = null;
+
   private _actions:any = this.fb.ref(`actions/${this.itemId}`);
   private _items:any = this.fb.ref(`items`);
 
@@ -57,9 +60,18 @@ export class ActionListComponent {
     });
   }
 
-  addItem() {
-    this._actions.push({
-      text: '',
-    });
+  onSelector(action:ActionComponent) {
+    if (action !== null) {
+      this.activeAction = action;
+    }
+  }
+
+  selectorClose() {
+    this.activeAction = null;
+  }
+
+  selectorSelect(participant) {
+    this.activeAction.addTeammate(participant);
+    this.selectorClose();
   }
 }

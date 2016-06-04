@@ -61,7 +61,7 @@ import {NavigationComponent} from './navigation.component';
     <section class="{{stepClass}}">
       <header class="ret-header">
         <h1>eSky retrospective</h1> 
-        <span class="ret-step">&nbsp;&nbsp;-&nbsp;&nbsp;{{stepName}}</span>
+        <span *ngIf="stepName" class="ret-step">&nbsp;&nbsp;-&nbsp;&nbsp;{{stepName}}</span>
         <ret-participants></ret-participants>
       </header>
     

@@ -4,11 +4,36 @@ import {FirebaseService} from '../services/firebase.service';
 
 @Component({
   selector: 'ret-participants-selector',
+  host: { 'class': 'ng-animate' },
   styles: [`
     :host {
-      position: absolute;
-      top: 10px;
-      left: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 1000;
+    }
+    :host(.ng-enter) {
+      transition: opacity 0.3s ease-out;
+      opacity: 0;
+    }
+    :host(.ng-enter) .dialog {
+      transition: transform 0.2s ease-out;
+      transform: perspective(200px) translate3d(0px,-1000px,-1000px);
+    }
+    :host(.ng-enter-active) {
+      opacity: 1;
+    }
+    :host(.ng-enter-active) .dialog {
+      transform: perspective(0);
+    }
+    .dialog {
+      position: relative;
       padding: 32px;
       background-color: #ffffff;
       border-radius: 3px;
@@ -60,11 +85,13 @@ import {FirebaseService} from '../services/firebase.service';
     }
   `],
   template: `
-    <div class="close" (click)="onClose()">x</div>
-    <div class="label">Choose a teammate:</div>
-    <div class="participant" *ngFor="let participant of participants" (click)="onSelect(participant)">
-      <img [src]="participant.photoURL"/>
-      <div class="name">{{participant.name}}</div>
+    <div class="dialog">
+      <div class="close" (click)="onClose()">x</div>
+      <div class="label">Choose a teammate:</div>
+      <div class="participant" *ngFor="let participant of participants" (click)="onSelect(participant)">
+        <img [src]="participant.photoURL"/>
+        <div class="name">{{participant.name}}</div>
+      </div>
     </div>
   `
 })

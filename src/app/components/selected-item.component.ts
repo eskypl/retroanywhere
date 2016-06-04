@@ -1,6 +1,7 @@
-import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, Input, OnInit, ChangeDetectorRef, Output} from '@angular/core';
 import {FirebaseService} from '../services/firebase.service';
 import {ActionComponent} from './action.component';
+import {EventEmitter} from '@angular/compiler/src/facade/async';
 
 @Component({
   selector: 'ret-selected-item',
@@ -12,7 +13,7 @@ import {ActionComponent} from './action.component';
       flex-basis: 35rem;
       background: #2b465e;
       border-radius: 3px;
-      overflow: hidden;
+      /*overflow: hidden;*/
       color: #dcdee3;
       position: relative;
       padding-bottom: 3rem;
@@ -61,12 +62,13 @@ import {ActionComponent} from './action.component';
   `],
   template: `
     <div class="text" [style.background]="color">{{text}}</div>
-    <ret-action *ngFor="let actionId of actionIds" [uid]="actionId" [itemId]="itemId"></ret-action>
+    <ret-action *ngFor="let actionId of actionIds" [uid]="actionId" [itemId]="itemId" (teammateSelector)="onSelector($event)"></ret-action>
     <button class="add-action icon-plus" (click)="addAction()"></button>
   `
 })
 export class SelectedItemComponent {
   @Input() itemId;
+  @Output() temmateSelector = new EventEmitter();
   actionIds = [];
   text:string;
   color:string;
@@ -98,6 +100,10 @@ export class SelectedItemComponent {
         this.ref.detectChanges();
       });
     });
+  }
+
+  onSelector(i) {
+    this.temmateSelector.emit(i);
   }
 
   addAction() {

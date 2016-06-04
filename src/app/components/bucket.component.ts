@@ -33,6 +33,7 @@ declare var firebase: any;
       background: #2b465e;
       color: #fff;
       cursor: pointer;
+      outline: none;
     }
     .ret-bucket-name {
       text-align: center;

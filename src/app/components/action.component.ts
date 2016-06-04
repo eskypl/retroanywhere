@@ -1,11 +1,9 @@
-import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
-
+import {Component, Input, OnInit, ChangeDetectorRef, Output} from '@angular/core';
 import {FirebaseService} from '../services/firebase.service';
-import {ParticipantsSelectorComponent} from './participants-selector.component';
+import {EventEmitter} from '@angular/compiler/src/facade/async';
 
 @Component({
   selector: 'ret-action',
-  directives: [ParticipantsSelectorComponent],
   host: {'class' : 'ng-animate'},
   styles: [`
     :host(.ng-enter) {
@@ -141,18 +139,16 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
     <div *ngIf="!teammate" class="add-teammate">
       <a (click)="showSelector()"><span class="icon icon-plus_2"></span> add teammate</a> 
     </div>
-    <ret-participants-selector *ngIf="selectorVisible" (close)="hideSelector()" (select)="addTeammate($event)"></ret-participants-selector>
   `
 })
 export class ActionComponent {
   @Input() uid;
   @Input() itemId;
+  @Output() teammateSelector = new EventEmitter();
   initial = true;
   text: string;
   isEditedBy = null;
   teammate = null;
-  myVotes;
-  private selectorVisible = false;
   private focused = false;
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {
@@ -207,11 +203,11 @@ export class ActionComponent {
   }
 
   showSelector() {
-    this.selectorVisible = true;
+    this.teammateSelector.emit(this);
   }
 
   hideSelector() {
-    this.selectorVisible = false;
+    this.teammateSelector.emit(null);
   }
 
   addTeammate(participant) {
