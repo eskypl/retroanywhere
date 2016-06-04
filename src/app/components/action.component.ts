@@ -7,13 +7,14 @@ import {FirebaseService} from '../services/firebase.service';
   styles: [`
     :host {
       display: block;
-      padding: 1.25rem 0 0 0;
+      padding: 0;
       flex-basis: 16.875rem;
       /*min-height: 10rem;*/
       background: #2b465e;
       border-radius: 3px;
       overflow: hidden;
       color: #182531;
+      position: relative;
     }
     textarea {
       border: none;
@@ -32,10 +33,9 @@ import {FirebaseService} from '../services/firebase.service';
       font-weight: 400;
     }
     .edited-by-section {
-      padding: .625rem;
-      min-height: 2.5rem;
-      max-height: 2.5rem;
-      line-height: 2.5rem;
+      position: absolute;
+      right: 2rem;
+      bottom: 1.3rem;
       color: #969dac;
       font-size: .875rem;
     }
@@ -109,7 +109,6 @@ import {FirebaseService} from '../services/firebase.service';
       (focus)="onFocus()" (blur)="onBlur()"
     ></textarea>
     <div class="edited-by-section">
-      <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
       {{isEditedBy?.name}}
       <img class="edited-by-icon" *ngIf="isEditedBy" src="https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Ftyping.gif?alt=media&token=34999844-2023-4566-985d-08a8fa23e6dc" />
     </div>
@@ -128,7 +127,7 @@ export class ActionComponent {
   initial = true;
   text: string;
   isEditedBy = null;
-  teammate = null
+  teammate = null;
   myVotes;
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {
