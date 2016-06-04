@@ -9,11 +9,11 @@ import {EventEmitter} from '@angular/compiler/src/facade/async';
     :host(.ng-enter) {
       transition: transform 0.5s ease-out;
       transform: scaleY(0);
-    }    
+    }
     :host(.ng-enter-active) {
       transform: scaleY(1);
     }
-    
+
     .edited-by-section.ng-enter {
       transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform: scale(0);
@@ -21,7 +21,7 @@ import {EventEmitter} from '@angular/compiler/src/facade/async';
     .edited-by-section.ng-enter-active {
       transform: scale(1);
     }
-    
+
     :host {
       display: block;
       padding: 0;
@@ -83,7 +83,7 @@ import {EventEmitter} from '@angular/compiler/src/facade/async';
       height: 2.5rem;
       border-radius: 50%;
       float: left;
-      margin-right: .625rem;    
+      margin-right: .625rem;
     }
     .add-teammate {
       padding: .5rem 2rem;
@@ -102,6 +102,9 @@ import {EventEmitter} from '@angular/compiler/src/facade/async';
       font-size: 1.563rem;
       position: relative;
       padding-right: .5rem;
+    }
+    .add-teammate:hover .icon {
+      color: #233241;
     }
     .add-teammate .icon::before {
       position: relative;
@@ -124,8 +127,8 @@ import {EventEmitter} from '@angular/compiler/src/facade/async';
   template: `
     <textarea [placeholder]="placeholder"
       [ngClass]="{initial: initial}"
-      [ngModel]="text" 
-      (ngModelChange)="updateText($event)" 
+      [ngModel]="text"
+      (ngModelChange)="updateText($event)"
       (focus)="onFocus()" (blur)="onBlur()"
     ></textarea>
     <div *ngIf="isEditedBy" class="edited-by-section ng-animate">
@@ -135,9 +138,9 @@ import {EventEmitter} from '@angular/compiler/src/facade/async';
     <div *ngIf="teammate" class="selected-teammate" (click)="showSelector()">
       <img class="selected-teammate-image" [src]="teammate.photoURL"/>
       {{teammate.name}}
-    </div>      
+    </div>
     <div *ngIf="!teammate" class="add-teammate">
-      <a (click)="showSelector()"><span class="icon icon-plus_2"></span> add teammate</a> 
+      <a (click)="showSelector()"><span class="icon icon-plus_2"></span> add teammate</a>
     </div>
   `
 })

@@ -55,6 +55,10 @@ import {EventEmitter} from '@angular/compiler/src/facade/async';
       border-bottom-right-radius: 3px;
       cursor: pointer;
       outline: none;
+      transition: background-color 0.5s ease;
+    }
+    .add-action:hover {
+      background: #233241;
     }
     ret-action + ret-action {
       border-top: 1px solid #475f75;
