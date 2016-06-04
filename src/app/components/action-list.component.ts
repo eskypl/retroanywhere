@@ -12,10 +12,17 @@ declare var firebase: any;
   styles: [`
     :host {
       display: flex;
-      justify-content: space-between;
+      /*justify-content: space-between;*/
+      justify-content: flex-start;
       flex-wrap: wrap;
       padding: 1rem 2.5rem 1rem 1.25rem;
       color:#f6f7f8;
+    }
+    ret-selected-item {
+      margin-left: 5rem;    
+    }
+    ret-selected-item:nth-child(3n+1) {
+      margin-left: 1.25rem;
     }
   `],
   template: `

@@ -102,7 +102,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
   `],
   template: `
-    <textarea
+    <textarea placeholder="start typing here..."
       [ngClass]="{initial: initial}"
       [ngModel]="text" 
       (ngModelChange)="updateText($event)" 
@@ -155,7 +155,7 @@ export class ActionComponent {
   }
 
   updateText(text: string) {
-    this.fb.ref(this.getPath('initial')).set(false);
+    this.fb.ref(this.getPath('initial')).set(text === '');
     this.fb.ref(this.getPath('text')).set(text);
   }
 

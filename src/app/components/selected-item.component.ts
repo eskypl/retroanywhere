@@ -2,8 +2,6 @@ import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
 import {FirebaseService} from '../services/firebase.service';
 import {ActionComponent} from './action.component';
 
-const INITIAL_ACTION_TEXT = 'start typing here...';
-
 @Component({
   selector: 'ret-selected-item',
   directives: [ActionComponent],
@@ -105,7 +103,7 @@ export class SelectedItemComponent {
   addAction() {
     let action = this.fb.ref(`actions/${this.itemId}`).push({
       initial: true,
-      text: INITIAL_ACTION_TEXT
+      text: ''
     });
     this.actionIds.push(action.key);
   }
