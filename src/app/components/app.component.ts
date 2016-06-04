@@ -10,7 +10,7 @@ import {StepsService} from '../services/steps.service';
 @Component({
   selector: 'ret-app',
   providers: [FirebaseService, StepsService],
-  directives: [ParticipantsComponent, BucketComponent,ActionListComponent, NavigationComponent],
+  directives: [ParticipantsComponent, BucketComponent, ActionListComponent, NavigationComponent],
   styles: [`
     :host {
       height: 100%;
@@ -91,21 +91,23 @@ export class AppComponent {
   ) {}
 
   ngOnInit() {
-    this.fb.ref('buckets').once('value').then((snapshot)=>{
-      snapshot.forEach((child) => {
-        let {name, color, icon} = child.val();
-        this.buckets.push({
-          id: child.key,
-          name, color, icon
+    this.fb.initRetro().then(() => {
+      this.fb.ref('buckets').once('value').then((snapshot)=>{
+        snapshot.forEach((child) => {
+          let {name, color, icon} = child.val();
+          this.buckets.push({
+            id: child.key,
+            name, color, icon
+          });
         });
+
+        this.ref.detectChanges();
       });
 
-      this.ref.detectChanges();
-    });
-
-    this.steps.getActiveStep(snapshot => {
-      this.currentStepKey = snapshot.val();
-      this.ref.detectChanges();
+      this.steps.getActiveStep(snapshot => {
+        this.currentStepKey = snapshot.val();
+        this.ref.detectChanges();
+      });
     });
   };
 
