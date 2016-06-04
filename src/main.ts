@@ -1,3 +1,4 @@
+import {enableProdMode} from '@angular/core';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 
 import {AppComponent} from './app/components/app.component';
@@ -13,6 +14,7 @@ firebase.initializeApp({
 firebase.auth().getRedirectResult().then(() => {
   let currentUser: any = firebase.auth().currentUser;
   if (currentUser) {
+    enableProdMode();
     bootstrap(AppComponent).catch(err => console.error(err));
   } else {
     firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
