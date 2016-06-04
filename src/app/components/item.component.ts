@@ -19,7 +19,7 @@ import {FirebaseService} from '../services/firebase.service';
     /* general */
     /* this should disable items with 0 votes
      * on select step, however stepsStrategy adds
-     * has-votes class anyway on this step, so this
+     * show-votes class anyway on this step, so this
      * rule does not work as expected. */
     :host-context(.not-VOTE) .ret-item-voting {
       visibility: hidden !important;
@@ -30,7 +30,7 @@ import {FirebaseService} from '../services/firebase.service';
       display: none;
     }
     :host-context(.VOTE) .ret-vote-actions:hover,
-    :host-context(.VOTE) .ret-item-voting.has-votes {
+    :host-context(.VOTE) .ret-item-voting.show-votes {
       visibility: visible;
     }
     
@@ -38,9 +38,9 @@ import {FirebaseService} from '../services/firebase.service';
     :host-context(.SELECT) .ret-vote-actions {
       display: none;
     }
-    :host-context(.SELECT) .ret-item-voting.has-votes {
+    :host-context(.SELECT) .ret-item-voting.show-votes {
       visibility: visible !important;
-    }
+    }   
     
     textarea {
       border: none;
@@ -116,7 +116,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
     .ret-item-voting:not(.has-votes) .ret-vote-count {
       opacity: .2;
-    }
+    }   
     .ret-vote-actions {
       position: absolute;
       top: .425rem;
@@ -140,7 +140,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
   `],
   template: `
-    <div [ngClass]="{'ret-item-voting': true, 'has-votes': stepStrategy.showVotes}">
+    <div [ngClass]="{'ret-item-voting': true, 'has-votes': stepStrategy.hasVotes, 'show-votes': stepStrategy.showVotes}">
       <label [ngClass]="{'ret-select': true, 'icon-check': selected}">
         <input [(ngModel)]="selected" type="checkbox"/>        
       </label>    
@@ -275,7 +275,11 @@ export class ItemComponent {
 class VoteStepStrategy{
   private _votes = 0;
 
-  get showVotes(){
+  get showVotes() {
+    return (this._votes > 0);
+  }
+
+  get hasVotes() {
     return (this._votes > 0);
   }
 
@@ -304,9 +308,12 @@ class VoteStepStrategy{
 class SelectStepStrategy{
   private _votes = 0;
 
-  get showVotes(){
+  get showVotes() {
     return true;
-    //return (this._votes > 0);
+  }
+
+  get hasVotes(){
+    return (this._votes > 0);
   }
 
   get votes(){
@@ -335,7 +342,11 @@ class SelectStepStrategy{
 
 class AddItemStepStrategy{
 
-  get showVotes (){
+  get showVotes() {
+    return false;
+  }
+
+  get hasVotes (){
     return false;
   }
 
