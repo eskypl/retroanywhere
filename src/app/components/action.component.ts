@@ -1,9 +1,11 @@
 import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
 
 import {FirebaseService} from '../services/firebase.service';
+import {ParticipantsSelectorComponent} from './participants-selector.component';
 
 @Component({
   selector: 'ret-action',
+  directives: [ParticipantsSelectorComponent],
   styles: [`
     :host {
       display: block;
@@ -12,7 +14,7 @@ import {FirebaseService} from '../services/firebase.service';
       /*min-height: 10rem;*/
       background: #2b465e;
       border-radius: 3px;
-      overflow: hidden;
+      /*overflow: hidden;*/
       color: #182531;
       position: relative;
     }
@@ -58,6 +60,7 @@ import {FirebaseService} from '../services/firebase.service';
       line-height: 2.5rem;
       color: #969dac;
       font-size: .875rem;
+      cursor: pointer;
     }
     .selected-teammate-image {
       width: 2.5rem;
@@ -112,13 +115,14 @@ import {FirebaseService} from '../services/firebase.service';
       {{isEditedBy?.name}}
       <span *ngIf="isEditedBy" class="bubble light edited-by-icon"></span>
     </div>
-    <div *ngIf="teammate" class="selected-teammate">
+    <div *ngIf="teammate" class="selected-teammate" (click)="showSelector()">
       <img class="selected-teammate-image" [src]="teammate.photoURL"/>
       {{teammate.name}}
     </div>      
-    <button *ngIf="!teammate" class="add-teammate">
+    <button *ngIf="!teammate" class="add-teammate" (click)="showSelector()">
       <span class="icon icon-plus_2"></span> add teammate 
     </button>
+    <ret-participants-selector *ngIf="selectorVisible" (close)="hideSelector()" (select)="addTeammate($event)"></ret-participants-selector>
   `
 })
 export class ActionComponent {
@@ -129,6 +133,7 @@ export class ActionComponent {
   isEditedBy = null;
   teammate = null;
   myVotes;
+  private selectorVisible = false;
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {
   }
@@ -152,6 +157,11 @@ export class ActionComponent {
       this.isEditedBy = snapshot.val();
       this.ref.detectChanges();
     });
+
+    this.fb.ref(this.getPath('responsiblePerson')).on('value', (snapshot) => {
+      this.teammate = snapshot.val();
+      this.ref.detectChanges();
+    });
   }
 
   updateText(text: string) {
@@ -170,5 +180,18 @@ export class ActionComponent {
 
   onBlur() {
     this.fb.ref(this.getPath('isEditedBy')).set(null);
+  }
+
+  showSelector() {
+    this.selectorVisible = true;
+  }
+
+  hideSelector() {
+    this.selectorVisible = false;
+  }
+
+  addTeammate(participant) {
+    this.fb.ref(this.getPath('responsiblePerson')).set(participant);
+    this.hideSelector();
   }
 }

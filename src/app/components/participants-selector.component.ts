@@ -62,7 +62,7 @@ import {FirebaseService} from '../services/firebase.service';
   template: `
     <div class="close" (click)="onClose()">x</div>
     <div class="label">Choose a teammate:</div>
-    <div class="participant" *ngFor="let participant of participants" (click)="onSelect(participant.uid)">
+    <div class="participant" *ngFor="let participant of participants" (click)="onSelect(participant)">
       <img [src]="participant.photoURL"/>
       <div class="name">{{participant.name}}</div>
     </div>
@@ -91,7 +91,7 @@ export class ParticipantsSelectorComponent {
     this.close.emit(null);
   }
 
-  onSelect(participantUid) {
-    this.select.emit(participantUid);
+  onSelect(participant) {
+    this.select.emit(participant);
   }
 }
