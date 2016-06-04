@@ -6,7 +6,26 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
 @Component({
   selector: 'ret-action',
   directives: [ParticipantsSelectorComponent],
+  host: {'class' : 'ng-animate'},
   styles: [`
+    :host {
+      transition: background-color 0.5s ease-in;
+    }
+    :host(.ng-enter) {
+      background-color: #a0a0a0;
+    }    
+    :host(.ng-enter-active) {
+      background-color: inherit;
+    }
+    
+    .edited-by-section.ng-enter {
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform: scale(0);
+    }
+    .edited-by-section.ng-enter-active {
+      transform: scale(1);
+    }
+    
     :host {
       display: block;
       padding: 0;
@@ -113,9 +132,9 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
       (ngModelChange)="updateText($event)" 
       (focus)="onFocus()" (blur)="onBlur()"
     ></textarea>
-    <div class="edited-by-section">
+    <div *ngIf="isEditedBy" class="edited-by-section ng-animate">
       {{isEditedBy?.name}}
-      <span *ngIf="isEditedBy" class="bubble light edited-by-icon"></span>
+      <span class="bubble light edited-by-icon"></span>
     </div>
     <div *ngIf="teammate" class="selected-teammate" (click)="showSelector()">
       <img class="selected-teammate-image" [src]="teammate.photoURL"/>

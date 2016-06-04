@@ -62,6 +62,13 @@ import {FirebaseService} from '../services/firebase.service';
       color: #182531;
       font-size: .875rem;
     }
+    .edited-by-content.ng-enter {
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.125);
+      transform: scale(0);
+    }
+    .edited-by-content.ng-enter-active {
+      transform: scale(1);
+    }
     .edited-by-icon {
       position: relative;
       top: 5px;
@@ -156,9 +163,11 @@ import {FirebaseService} from '../services/firebase.service';
       (blur)="onBlur()">
     </textarea>
     <div class="edited-by-section">
-      <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
-      {{isEditedBy?.name}}
-      <span *ngIf="isEditedBy" class="bubble dark edited-by-icon"></span>
+      <div *ngIf="isEditedBy" class="edited-by-content ng-animate">
+        <img class="edited-by-image" [src]="isEditedBy.photoURL"/>
+        {{isEditedBy?.name}}
+        <span class="bubble dark edited-by-icon"></span>
+      </div>      
     </div>
   `
 })
