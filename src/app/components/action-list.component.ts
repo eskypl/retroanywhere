@@ -11,21 +11,15 @@ declare var firebase: any;
   providers: [FirebaseService],
   styles: [`
     :host {
-      display: block;
-      flex-grow: 1;
-      padding: 1em 2.5em;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 1rem 2.5rem 1rem 1.25rem;
       color:#f6f7f8;
     }
   `],
   template: `
-    <div>
       <ret-selected-item *ngFor="let selectedItemId of selectedItemsIds" [itemId]="selectedItemId"></ret-selected-item>
-    
-      <!--<div class="ret-items">-->
-          <!--<ret-action *ngFor="let uid of actionUids" [uid]="uid" [itemId]="itemId" [style.background]="color"></ret-action>-->
-          <!--<button class="ret-item-add" (click)="addItem()">Add</button>-->
-      <!--</div>-->
-    </div>
   `
 })
 export class ActionListComponent {
@@ -51,7 +45,6 @@ export class ActionListComponent {
     });
 
     this._actions.on('child_added', (snapshot) => {
-      var action = snapshot.val();
       this.actionUids.push(snapshot.key);
       this.ref.detectChanges();
     });

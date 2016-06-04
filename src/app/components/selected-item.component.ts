@@ -10,13 +10,14 @@ const INITIAL_ACTION_TEXT = 'start typing here...';
   styles: [`
     :host {
       display: block;
-      margin: 1.25rem 0 0 0;
-      flex-basis: 16.875rem;
-      min-height: 10rem;
+      margin: 1.25rem 0 0 1.25rem;
+      flex-basis: 35rem;
       background: #2b465e;
       border-radius: 3px;
       overflow: hidden;
       color: #dcdee3;
+      position: relative;
+      padding-bottom: 3rem;
     }
     .text {
       border: none;
@@ -40,12 +41,30 @@ const INITIAL_ACTION_TEXT = 'start typing here...';
       color: #dcdee3;
       padding: 2rem;
       font: 400 .875rem 'Ubuntu', sans-serif;
-    }        
+      outline: none;
+    }
+    .add-action {
+      position: absolute;
+      bottom: 0;
+      background: #1c2b39;
+      color: #fff;
+      border: 0;
+      padding: 1rem;
+      margin: 0;
+      width: 100%;
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+      cursor: pointer;
+      outline: none;
+    }
+    ret-action + ret-action {
+      border-top: 1px solid #475f75;
+    }
   `],
   template: `
     <div class="text" [style.background]="color">{{text}}</div>
     <ret-action *ngFor="let actionId of actionIds" [uid]="actionId" [itemId]="itemId"></ret-action>
-    <button class="add-action" (click)="addAction()">add</button>
+    <button class="add-action icon-plus" (click)="addAction()"></button>
   `
 })
 export class SelectedItemComponent {
