@@ -113,7 +113,7 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
       (ngModelChange)="updateText($event)" 
       (focus)="onFocus()" (blur)="onBlur()"
     ></textarea>
-    <div class="edited-by-section animated" [ngClass]="{ bounceIn: isEditedBy, bounceOut: !isEditedBy }">
+    <div class="edited-by-section">
       {{isEditedBy?.name}}
       <span *ngIf="isEditedBy" class="bubble light edited-by-icon"></span>
     </div>

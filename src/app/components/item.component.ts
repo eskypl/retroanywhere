@@ -14,10 +14,6 @@ import {FirebaseService} from '../services/firebase.service';
       border-radius: 3px;
       overflow: hidden;
       color: #182531;
-      
-      animation-duration: 1s;
-      animation-fill-mode: both;      
-      animation-name: tada;      
     }
     
     /* general */
@@ -159,7 +155,7 @@ import {FirebaseService} from '../services/firebase.service';
       (focus)="onFocus()"
       (blur)="onBlur()">
     </textarea>
-    <div class="edited-by-section animated" [ngClass]="{ bounceIn: isEditedBy, bounceOut: !isEditedBy }">
+    <div class="edited-by-section">
       <img class="edited-by-image" *ngIf="isEditedBy" [src]="isEditedBy.photoURL"/>
       {{isEditedBy?.name}}
       <span *ngIf="isEditedBy" class="bubble dark edited-by-icon"></span>
