@@ -150,7 +150,7 @@ import {FirebaseService} from '../services/firebase.service';
         <button *ngIf="stepStrategy.showItemVoting" (click)="addVote()"><span class="icon icon-plus_2"></span></button>
       </div>
     </div>
-    <textarea [ngModel]="text" (ngModelChange)="updateText($event)" 
+    <textarea placeholder="type something here..." [ngModel]="text" (ngModelChange)="updateText($event)" 
       (focus)="onFocus()"
       (blur)="onBlur()">
     </textarea>

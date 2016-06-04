@@ -105,7 +105,7 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
     }
   `],
   template: `
-    <textarea placeholder="start typing here..."
+    <textarea placeholder="type something here..."
       [ngClass]="{initial: initial}"
       [ngModel]="text" 
       (ngModelChange)="updateText($event)" 
