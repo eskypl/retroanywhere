@@ -41,7 +41,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
     .edited-by-icon {
       position: relative;
-      top: 6px;
+      top: 4px;
       left: 3px;
     }
     .edited-by-image {
@@ -110,7 +110,7 @@ import {FirebaseService} from '../services/firebase.service';
     ></textarea>
     <div class="edited-by-section">
       {{isEditedBy?.name}}
-      <img class="edited-by-icon" *ngIf="isEditedBy" src="https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Ftyping.gif?alt=media&token=34999844-2023-4566-985d-08a8fa23e6dc" />
+      <span *ngIf="isEditedBy" class="bubble light edited-by-icon"></span>
     </div>
     <div *ngIf="teammate" class="selected-teammate">
       <img class="selected-teammate-image" [src]="teammate.photoURL"/>
