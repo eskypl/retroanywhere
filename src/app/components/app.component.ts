@@ -1,11 +1,12 @@
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 
 import {FirebaseService} from '../services/firebase.service';
+import {StepsService} from '../services/steps.service';
+
 import {ParticipantsComponent} from './participants.component';
 import {BucketComponent} from './bucket.component';
 import {ActionListComponent} from './action-list.component';
 import {NavigationComponent} from './navigation.component';
-import {StepsService} from '../services/steps.service';
 
 @Component({
   selector: 'ret-app',
