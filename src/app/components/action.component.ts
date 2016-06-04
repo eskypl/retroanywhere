@@ -37,7 +37,7 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
     .edited-by-section {
       position: absolute;
       right: 2rem;
-      bottom: 1.3rem;
+      bottom: 1.25rem;
       color: #969dac;
       font-size: .875rem;
     }
@@ -54,7 +54,7 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
       margin-right: .625rem;
     }
     .selected-teammate {
-      padding: 1rem 2rem;
+      padding: .5rem 2rem;
       min-height: 2.5rem;
       max-height: 2.5rem;
       line-height: 2.5rem;
@@ -70,11 +70,12 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
       margin-right: .625rem;    
     }
     .add-teammate {
-      display: block;
-      color: #f6f7f8;
-      font-size: 0.875rem;
-      line-height: 1.563rem;
-      padding: 1rem 2rem;
+      padding: .5rem 2rem;
+      min-height: 2.5rem;
+      max-height: 2.5rem;
+      line-height: 2.5rem;
+      color: #969dac;
+      font-size: .875rem;
       cursor: pointer;
       border: 0;
       background: transparent;
@@ -119,9 +120,9 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
       <img class="selected-teammate-image" [src]="teammate.photoURL"/>
       {{teammate.name}}
     </div>      
-    <button *ngIf="!teammate" class="add-teammate" (click)="showSelector()">
-      <span class="icon icon-plus_2"></span> add teammate 
-    </button>
+    <div *ngIf="!teammate" class="add-teammate">
+      <a (click)="showSelector()"><span class="icon icon-plus_2"></span> add teammate</a> 
+    </div>
     <ret-participants-selector *ngIf="selectorVisible" (close)="hideSelector()" (select)="addTeammate($event)"></ret-participants-selector>
   `
 })
