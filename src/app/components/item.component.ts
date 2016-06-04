@@ -305,8 +305,8 @@ class SelectStepStrategy{
   private _votes = 0;
 
   get showVotes(){
-    // return true;
-    return (this._votes > 0);
+    return true;
+    //return (this._votes > 0);
   }
 
   get votes(){
