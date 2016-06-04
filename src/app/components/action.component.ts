@@ -29,6 +29,7 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
       padding: 1rem 2rem;
       font-family: 'Ubuntu', sans-serif;
       font-weight: bold;
+      resize: none;
     }
     textarea.initial {
       color: #969dac;
