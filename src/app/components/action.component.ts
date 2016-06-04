@@ -8,14 +8,12 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
   directives: [ParticipantsSelectorComponent],
   host: {'class' : 'ng-animate'},
   styles: [`
-    :host {
-      transition: background-color 0.5s ease-in;
-    }
     :host(.ng-enter) {
-      background-color: #a0a0a0;
+      transition: transform 0.5s ease-out;
+      transform: scaleY(0);
     }    
     :host(.ng-enter-active) {
-      background-color: inherit;
+      transform: scaleY(1);
     }
     
     .edited-by-section.ng-enter {
