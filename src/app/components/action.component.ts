@@ -105,7 +105,7 @@ import {ParticipantsSelectorComponent} from './participants-selector.component';
     }
   `],
   template: `
-    <textarea placeholder="type something here..."
+    <textarea [placeholder]="placeholder"
       [ngClass]="{initial: initial}"
       [ngModel]="text" 
       (ngModelChange)="updateText($event)" 
@@ -134,6 +134,7 @@ export class ActionComponent {
   teammate = null;
   myVotes;
   private selectorVisible = false;
+  private focused = false;
 
   constructor(private fb: FirebaseService, private ref: ChangeDetectorRef) {
   }
@@ -170,6 +171,8 @@ export class ActionComponent {
   }
 
   onFocus() {
+    this.focused = true;
+
     let currentUser = this.fb.currentUser;
 
     this.fb.ref(this.getPath('isEditedBy')).set({
@@ -179,6 +182,8 @@ export class ActionComponent {
   }
 
   onBlur() {
+    this.focused = false;
+
     this.fb.ref(this.getPath('isEditedBy')).set(null);
   }
 
@@ -193,5 +198,9 @@ export class ActionComponent {
   addTeammate(participant) {
     this.fb.ref(this.getPath('responsiblePerson')).set(participant);
     this.hideSelector();
+  }
+
+  get placeholder() {
+    return this.focused ? '' : '...';
   }
 }

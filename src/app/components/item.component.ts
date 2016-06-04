@@ -150,7 +150,7 @@ import {FirebaseService} from '../services/firebase.service';
         <button *ngIf="stepStrategy.showItemVoting" (click)="addVote()"><span class="icon icon-plus_2"></span></button>
       </div>
     </div>
-    <textarea placeholder="type something here..." [ngModel]="text" (ngModelChange)="updateText($event)" 
+    <textarea [placeholder]="placeholder" [ngModel]="text" (ngModelChange)="updateText($event)" 
       (focus)="onFocus()"
       (blur)="onBlur()">
     </textarea>
@@ -167,6 +167,7 @@ export class ItemComponent {
   isEditedBy = null;
   stepStrategy: any;
   currentStepKey = "ADD_ITEMS";
+  private focused = false;
 
   private _selected:boolean = false;
 
@@ -209,6 +210,8 @@ export class ItemComponent {
   }
 
   onFocus() {
+    this.focused = true;
+
     let currentUser = this.fb.currentUser;
 
     this.fb.ref(`items/${this.uid}/isEditedBy`).set({
@@ -218,6 +221,8 @@ export class ItemComponent {
   }
 
   onBlur() {
+    this.focused = false;
+
     this.fb.ref(`items/${this.uid}/isEditedBy`).set(null);
   }
 
@@ -270,6 +275,9 @@ export class ItemComponent {
     this.fb.ref(`items/${this.uid}/selected`).set(this._selected);
   }
 
+  get placeholder() {
+    return this.focused ? '' : '...';
+  }
 }
 
 class VoteStepStrategy{
