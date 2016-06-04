@@ -51,8 +51,7 @@ import {FirebaseService} from '../services/firebase.service';
       background: transparent;
       color: #182531;
       padding: 2rem;
-      font-family: 'Ubuntu', sans-serif;
-      font-weight: bold;
+      font: 700 1rem 'Ubuntu', sans-serif;
     }
     .edited-by-section {
       padding: .625rem;
