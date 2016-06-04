@@ -4,7 +4,15 @@ import {FirebaseService} from '../services/firebase.service';
 
 @Component({
   selector: 'ret-participant',
+  host: {'class' : 'ng-animate'},
   styles: [`
+    :host(.ng-enter) {
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform: scale(0);
+    }    
+    :host(.ng-enter-active) {
+      transform: scale(1);
+    }
     :host {
       display: flex;
       flex-direction: row;
