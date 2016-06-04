@@ -27,6 +27,10 @@ import {StepsService} from '../services/steps.service';
       margin: 0;
       outline: none;
       cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+    .icon:hover {
+      transform: scale(1.3);
     }
     .icon-left {
       float: left;

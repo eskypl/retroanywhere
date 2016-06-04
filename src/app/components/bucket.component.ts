@@ -9,7 +9,7 @@ declare var firebase: any;
   selector: 'ret-bucket',
   directives: [ItemComponent],
   providers: [FirebaseService],
-  styles: [`    
+  styles: [`
     :host {
       display: block;
       min-width: 35rem;
@@ -34,6 +34,12 @@ declare var firebase: any;
       color: #fff;
       cursor: pointer;
       outline: none;
+    }
+    .icon-plus {
+      transition: transform 0.5s ease;
+    }
+    .ret-item-add:hover .icon-plus {
+      transform: scale(1.5);
     }
     .ret-bucket-name {
       text-align: center;

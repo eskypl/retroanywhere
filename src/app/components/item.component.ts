@@ -9,7 +9,7 @@ import {FirebaseService} from '../services/firebase.service';
     :host(.ng-enter) {
       transition: transform 0.5s ease-out;
       transform: scale(0);
-    }    
+    }
     :host(.ng-enter-active) {
       transform: scale(1);
     }
@@ -23,7 +23,7 @@ import {FirebaseService} from '../services/firebase.service';
       overflow: hidden;
       color: #182531;
     }
-    
+
     /* general */
     /* this should disable items with 0 votes
      * on select step, however stepsStrategy adds
@@ -32,7 +32,7 @@ import {FirebaseService} from '../services/firebase.service';
     :host-context(.not-VOTE) .ret-item-voting {
       visibility: hidden !important;
     }
-    
+
     /* vote step */
     :host-context(.VOTE) .ret-select {
       display: none;
@@ -41,15 +41,15 @@ import {FirebaseService} from '../services/firebase.service';
     :host-context(.VOTE) .ret-item-voting.show-votes {
       visibility: visible;
     }
-    
+
     /* select step */
     :host-context(.SELECT) .ret-vote-actions {
       display: none;
     }
     :host-context(.SELECT) .ret-item-voting.show-votes {
       visibility: visible !important;
-    }   
-    
+    }
+
     textarea {
       border: none;
       outline: none;
@@ -112,6 +112,7 @@ import {FirebaseService} from '../services/firebase.service';
       padding: 0;
       margin: 0 0 0 .5rem;
       max-height: 1.625rem;
+      cursor: pointer;
     }
     .ret-vote-actions .icon {
       display: inline-block;
@@ -120,6 +121,9 @@ import {FirebaseService} from '../services/firebase.service';
       color: #1c2b39;
       font-size: 1.625rem;
       outline: none;
+    }
+    button:hover .icon {
+      color: #2c3b49;
     }
     .ret-vote-count {
       margin-left: 1rem;
@@ -132,7 +136,7 @@ import {FirebaseService} from '../services/firebase.service';
     }
     .ret-item-voting:not(.has-votes) .ret-vote-count {
       opacity: .2;
-    }   
+    }
     .ret-vote-actions {
       position: absolute;
       top: .425rem;
@@ -158,15 +162,15 @@ import {FirebaseService} from '../services/firebase.service';
   template: `
     <div [ngClass]="{'ret-item-voting': true, 'has-votes': stepStrategy.hasVotes, 'show-votes': stepStrategy.showVotes}">
       <label [ngClass]="{'ret-select': true, 'icon-check': selected}">
-        <input [(ngModel)]="selected" type="checkbox"/>        
-      </label>    
+        <input [(ngModel)]="selected" type="checkbox"/>
+      </label>
       <span class="ret-vote-count">{{stepStrategy.votes}} <span class="sufix">votes</span></span>
       <div class="ret-vote-actions" *ngIf="stepStrategy.showItemVoting">
-        <button *ngIf="stepStrategy.showUnvoteButton" (click)="removeVote()"><span class="icon icon-minus_2"></span></button> 
+        <button *ngIf="stepStrategy.showUnvoteButton" (click)="removeVote()"><span class="icon icon-minus_2"></span></button>
         <button *ngIf="stepStrategy.showItemVoting" (click)="addVote()"><span class="icon icon-plus_2"></span></button>
       </div>
     </div>
-    <textarea [placeholder]="placeholder" [ngModel]="text" (ngModelChange)="updateText($event)" 
+    <textarea [placeholder]="placeholder" [ngModel]="text" (ngModelChange)="updateText($event)"
       (focus)="onFocus()"
       (blur)="onBlur()">
     </textarea>
@@ -175,7 +179,7 @@ import {FirebaseService} from '../services/firebase.service';
         <img class="edited-by-image" [src]="isEditedBy.photoURL"/>
         {{isEditedBy?.name}}
         <span class="bubble dark edited-by-icon"></span>
-      </div>      
+      </div>
     </div>
   `
 })
