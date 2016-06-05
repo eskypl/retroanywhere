@@ -83,14 +83,8 @@ export class SelectedItemComponent {
   ) {}
 
   ngOnInit() {
-    this.fb.ref(`actions/${this.itemId}`).once('value', snapshot => {
-      let actions = snapshot.val();
-      if (actions) {
-        this.actionIds = Object.keys(actions);
-      } else {
-        this.addAction();
-      }
-
+    this.fb.ref(`actions/${this.itemId}`).on('child_added', snapshot => {
+      this.actionIds.push(snapshot.key);
       this.ref.detectChanges();
     });
 
@@ -115,7 +109,6 @@ export class SelectedItemComponent {
       initial: true,
       text: ''
     });
-    this.actionIds.push(action.key);
   }
 
 }

@@ -37,7 +37,7 @@ export class FirebaseService {
       this.ref(`participants/${this.currentUser.uid}`).set({
         name: this.currentUser.displayName,
         email: this.currentUser.email,
-        photoURL: this.currentUser.photoURL
+        photoURL: this.currentUser.photoURL || this.defaultPhothoURL
       });
     });
   }
@@ -48,5 +48,9 @@ export class FirebaseService {
 
   ref(path: string) {
     return firebase.database().ref(`retros/${this.retroUid}/${path}`);
+  }
+
+  get defaultPhothoURL() {
+    return "https://lh3.googleusercontent.com/-fRsMC3r6ubk/AAAAAAAAAAI/AAAAAAAABvE/xuCTmUDD1HE/s96-c/photo.jpg";
   }
 }

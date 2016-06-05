@@ -222,7 +222,7 @@ export class ItemComponent {
       }
     });
 
-    this.fb.ref(`items/${this.uid}/selected`).once('value', snapshot => {
+    this.fb.ref(`items/${this.uid}/selected`).on('value', snapshot => {
       this.selected = snapshot.val() || false;
     });
   }
