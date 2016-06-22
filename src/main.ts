@@ -1,9 +1,9 @@
+const firebase = require('firebase');
+
 import {enableProdMode} from '@angular/core';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 
 import {AppComponent} from './app/components/app.component';
-
-declare var firebase: any;
 
 firebase.initializeApp({
   apiKey: "AIzaSyDvy_O9Gq7VqFr5mD4VG--aH0z_o_IRHuw",

@@ -1,7 +1,8 @@
-import {Injectable} from '@angular/core';
-
-declare var firebase: any;
 declare var window: any;
+
+const firebase = require('firebase');
+
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class FirebaseService {
