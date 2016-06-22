@@ -6,9 +6,9 @@ import {AppComponent} from './app/components/app.component';
 declare var firebase: any;
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDbraSHmsiOH0SCHy_NLaX6wIgXpc2CuAE",
-  authDomain: "eskyid-retro-app.firebaseapp.com",
-  databaseURL: "https://eskyid-retro-app.firebaseio.com"
+  apiKey: "AIzaSyDvy_O9Gq7VqFr5mD4VG--aH0z_o_IRHuw",
+  authDomain: "retroanywhere-dev.firebaseapp.com",
+  databaseURL: "https://retroanywhere-dev.firebaseio.com"
 });
 
 firebase.auth().getRedirectResult().then(() => {

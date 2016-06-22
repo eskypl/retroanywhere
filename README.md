@@ -6,8 +6,8 @@
 
 ### Dev mode
 - run `npm start` to fire up dev server
-- open browser to [`http://localhost:3000`](http://localhost:3000)
+- open browser to `http://localhost:3000/<your-retro-id>`
 
 ### To deploy
 - run `npm run deploy`
-- open browser to [`https://eskyid-retro-app.firebaseapp.com`](https://eskyid-retro-app.firebaseapp.com)
+- open browser to `https://retroanywhere-dev.firebaseapp.com/<your-retro-id>`
