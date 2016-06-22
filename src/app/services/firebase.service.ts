@@ -2,14 +2,12 @@ declare var window: any;
 
 const firebase = require('firebase');
 
-import {Injectable} from '@angular/core';
-
-@Injectable()
 export class FirebaseService {
 
-  private retroUid: string = window.location.pathname;
+  private retroUid: string;
 
-  initRetro() {
+  initRetro(retroUid: string) {
+    this.retroUid = retroUid;
     return firebase.database().ref(`retros/${this.retroUid}`).transaction((retro) => {
       if (!retro) {
         retro = {

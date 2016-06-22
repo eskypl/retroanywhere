@@ -1,4 +1,5 @@
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 import {FirebaseService} from '../services/firebase.service';
 import {StepsService} from '../services/steps.service';
@@ -9,8 +10,7 @@ import {ActionListComponent} from './action-list.component';
 import {NavigationComponent} from './navigation.component';
 
 @Component({
-  selector: 'ret-app',
-  providers: [FirebaseService, StepsService],
+  providers: [StepsService],
   directives: [ParticipantsComponent, BucketComponent, ActionListComponent, NavigationComponent],
   styles: [`
     :host {
@@ -60,54 +60,57 @@ import {NavigationComponent} from './navigation.component';
   template: `
     <section class="{{stepClass}}">
       <header class="ret-header">
-        <h1>eSky retrospective</h1> 
+        <h1>eSky retrospective</h1>
         <span *ngIf="stepName" class="ret-step">&nbsp;&nbsp;-&nbsp;&nbsp;{{stepName}}</span>
         <ret-participants></ret-participants>
       </header>
-    
+  
       <div [ngClass]="{hidden: hideBuckets, 'ret-buckets': true}" >
-        <ret-bucket *ngFor="let bucket of buckets" 
-          [name]="bucket.name" 
-          [color]="bucket.color" 
-          [icon]="bucket.icon" 
+        <ret-bucket *ngFor="let bucket of buckets"
+          [name]="bucket.name"
+          [color]="bucket.color"
+          [icon]="bucket.icon"
           [id]="bucket.id">
         </ret-bucket>
       </div>
       <div [hidden]="currentStepKey !== 'ADD_ACTIONS'">
         <ret-action-list></ret-action-list>
       </div>
-      
+  
       <ret-navigation></ret-navigation>
     </section>
   `
 })
-export class AppComponent {
+export class RetroComponent {
   buckets = [];
   currentStepKey = this.steps.initialStep;
 
   constructor(
     private fb:FirebaseService,
     private steps:StepsService,
-    private ref:ChangeDetectorRef
+    private ref:ChangeDetectorRef,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.fb.initRetro().then(() => {
-      this.fb.ref('buckets').once('value').then((snapshot)=>{
-        snapshot.forEach((child) => {
-          let {name, color, icon} = child.val();
-          this.buckets.push({
-            id: child.key,
-            name, color, icon
+    this.route.params.subscribe(params => {
+      this.fb.initRetro(params['retroUid']).then(() => {
+        this.fb.ref('buckets').once('value').then((snapshot)=>{
+          snapshot.forEach((child) => {
+            let {name, color, icon} = child.val();
+            this.buckets.push({
+              id: child.key,
+              name, color, icon
+            });
           });
+
+          this.ref.detectChanges();
         });
 
-        this.ref.detectChanges();
-      });
-
-      this.steps.getActiveStep(snapshot => {
-        this.currentStepKey = snapshot.val();
-        this.ref.detectChanges();
+        this.steps.getActiveStep(snapshot => {
+          this.currentStepKey = snapshot.val();
+          this.ref.detectChanges();
+        });
       });
     });
   };

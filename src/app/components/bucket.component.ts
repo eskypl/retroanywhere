@@ -8,7 +8,6 @@ declare var firebase: any;
 @Component({
   selector: 'ret-bucket',
   directives: [ItemComponent],
-  providers: [FirebaseService],
   styles: [`
     :host {
       display: block;

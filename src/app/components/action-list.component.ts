@@ -9,7 +9,6 @@ declare var firebase: any;
 @Component({
   selector: 'ret-action-list',
   directives: [SelectedItemComponent, ActionComponent, ParticipantsSelectorComponent],
-  providers: [FirebaseService],
   styles: [`
     :host {
       display: flex;
@@ -37,16 +36,13 @@ export class ActionListComponent {
   actionUids:string[] = [];
   activeAction:ActionComponent = null;
 
-  private _actions:any = this.fb.ref(`actions/${this.itemId}`);
-  private _items:any = this.fb.ref(`items`);
-
   constructor(
       private fb:FirebaseService,
       private ref:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this._items.orderByChild('selected').equalTo(true).on('value', snapshot => {
+    this.fb.ref(`items`).orderByChild('selected').equalTo(true).on('value', snapshot => {
       let selectedItems = snapshot.val();
 
       if (selectedItems) {
@@ -54,7 +50,7 @@ export class ActionListComponent {
       }
     });
 
-    this._actions.on('child_added', (snapshot) => {
+    this.fb.ref(`actions/${this.itemId}`).on('child_added', (snapshot) => {
       this.actionUids.push(snapshot.key);
       this.ref.detectChanges();
     });

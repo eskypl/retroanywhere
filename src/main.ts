@@ -3,7 +3,8 @@ const firebase = require('firebase');
 import {enableProdMode} from '@angular/core';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 
-import {AppComponent} from './app/components/app.component';
+import {AppComponent} from './app/app.component';
+import {ROUTER_PROVIDERS} from './app/config/routes';
 
 firebase.initializeApp({
   apiKey: "AIzaSyDvy_O9Gq7VqFr5mD4VG--aH0z_o_IRHuw",
@@ -15,7 +16,7 @@ firebase.auth().getRedirectResult().then(() => {
   let currentUser: any = firebase.auth().currentUser;
   if (currentUser) {
     enableProdMode();
-    bootstrap(AppComponent).catch(err => console.error(err));
+    bootstrap(AppComponent, [ROUTER_PROVIDERS]).catch(err => console.error(err));
   } else {
     firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
   }
