@@ -1,6 +1,6 @@
-import {Component, Input, OnInit, ChangeDetectorRef, Output} from '@angular/core';
-import {FirebaseService} from '../services/firebase.service';
-import {EventEmitter} from '@angular/compiler/src/facade/async';
+import { Component, Input, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
 
 @Component({
   selector: 'ret-action',

@@ -1,14 +1,15 @@
-import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
-import {FirebaseService} from '../services/firebase.service'
-import {ActionComponent} from './action.component'
-import {SelectedItemComponent} from './selected-item.component';
-import {ParticipantsSelectorComponent} from './participants-selector.component';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service'
+import { ActionComponent } from '../action/action.component'
+import { SelectedItemComponent } from '../selected-item/selected-item.component';
+import { ParticipantsSelectorComponent } from '../participants-selector/participants-selector.component';
 
 declare var firebase: any;
 
 @Component({
   selector: 'ret-action-list',
-  directives: [SelectedItemComponent, ActionComponent, ParticipantsSelectorComponent],
+  directives: [ SelectedItemComponent, ActionComponent, ParticipantsSelectorComponent ],
   styles: [`
     :host {
       display: flex;

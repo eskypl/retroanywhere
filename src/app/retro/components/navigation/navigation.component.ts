@@ -1,9 +1,10 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
-import {StepsService} from '../services/steps.service';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+
+import { StepsService } from '../../services/steps/steps.service';
 
 @Component({
   selector: 'ret-navigation',
-  providers: [StepsService],
+  providers: [ StepsService ],
   styles: [`
     :host {
       position: fixed;

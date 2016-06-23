@@ -1,13 +1,13 @@
-import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 
-import {FirebaseService} from '../services/firebase.service'
-import {ItemComponent} from './item.component';
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service'
+import { ItemComponent } from '../item/item.component';
 
 declare var firebase: any;
 
 @Component({
   selector: 'ret-bucket',
-  directives: [ItemComponent],
+  directives: [ ItemComponent ],
   styles: [`
     :host {
       display: block;

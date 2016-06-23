@@ -1,11 +1,11 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
-import {FirebaseService} from '../services/firebase.service';
-import {ParticipantComponent} from './participant.component';
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
+import { ParticipantComponent } from '../participant/participant.component';
 
 @Component({
   selector: 'ret-participants',
-  directives: [ParticipantComponent],
+  directives: [ ParticipantComponent ],
   styles: [`
     :host {
       display: flex;

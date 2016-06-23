@@ -1,5 +1,7 @@
-import {FirebaseService} from './firebase.service';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
+
 enum STEPS {
   ADD_ITEMS,
   VOTE,

@@ -1,6 +1,6 @@
-import {Component, Output, OnInit, ChangeDetectorRef, EventEmitter} from '@angular/core';
+import { Component, Output, OnInit, ChangeDetectorRef, EventEmitter } from '@angular/core';
 
-import {FirebaseService} from '../services/firebase.service';
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
 
 @Component({
   selector: 'ret-participants-selector',

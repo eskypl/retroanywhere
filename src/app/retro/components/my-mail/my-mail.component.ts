@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
-import {FirebaseService} from '../services/firebase.service';
+import { Component } from '@angular/core';
+
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
 
 @Component({
   selector: 'ret-my-mail',

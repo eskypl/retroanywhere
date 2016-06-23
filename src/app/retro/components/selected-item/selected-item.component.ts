@@ -1,11 +1,11 @@
-import {Component, Input, OnInit, ChangeDetectorRef, Output} from '@angular/core';
-import {FirebaseService} from '../services/firebase.service';
-import {ActionComponent} from './action.component';
-import {EventEmitter} from '@angular/compiler/src/facade/async';
+import { Component, Input, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
+import { ActionComponent } from '../action/action.component';
 
 @Component({
   selector: 'ret-selected-item',
-  directives: [ActionComponent],
+  directives: [ ActionComponent ],
   styles: [`
     :host {
       display: block;

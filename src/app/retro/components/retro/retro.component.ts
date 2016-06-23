@@ -1,17 +1,17 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {FirebaseService} from '../services/firebase.service';
-import {StepsService} from '../services/steps.service';
+import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
+import { StepsService } from '../../services/steps/steps.service';
 
-import {ParticipantsComponent} from './participants.component';
-import {BucketComponent} from './bucket.component';
-import {ActionListComponent} from './action-list.component';
-import {NavigationComponent} from './navigation.component';
+import { ParticipantsComponent } from '../participants/participants.component';
+import { BucketComponent } from '../bucket/bucket.component';
+import { ActionListComponent } from '../action-list/action-list.component';
+import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
-  providers: [StepsService],
-  directives: [ParticipantsComponent, BucketComponent, ActionListComponent, NavigationComponent],
+  providers: [ StepsService ],
+  directives: [ ParticipantsComponent, BucketComponent, ActionListComponent, NavigationComponent ],
   styles: [`
     :host {
       height: 100%;

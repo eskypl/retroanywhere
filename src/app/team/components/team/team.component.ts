@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 
 @Component({
   template: `
-    <div>START PAGE</div>
+    <div>TEAM PAGE</div>
   `
 })
-export class StartPageComponent {}
+export class TeamComponent {}
