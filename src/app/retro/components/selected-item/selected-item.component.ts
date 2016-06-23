@@ -4,7 +4,7 @@ import { FirebaseService } from '../../../shared/services/firebase/firebase.serv
 import { ActionComponent } from '../action/action.component';
 
 @Component({
-  selector: 'ret-selected-item',
+  selector: 'ra-selected-item',
   directives: [ ActionComponent ],
   styles: [`
     :host {
@@ -60,13 +60,13 @@ import { ActionComponent } from '../action/action.component';
     .add-action:hover {
       background: #233241;
     }
-    ret-action + ret-action {
+    ra-action + ra-action {
       border-top: 1px solid #475f75;
     }
   `],
   template: `
     <div class="text" [style.background]="color">{{text}}</div>
-    <ret-action *ngFor="let actionId of actionIds" [uid]="actionId" [itemId]="itemId" (teammateSelector)="onSelector($event)"></ret-action>
+    <ra-action *ngFor="let actionId of actionIds" [uid]="actionId" [itemId]="itemId" (teammateSelector)="onSelector($event)"></ra-action>
     <button class="add-action icon-plus" (click)="addAction()"></button>
   `
 })

@@ -3,7 +3,7 @@ import { Component, Output, OnInit, ChangeDetectorRef, EventEmitter } from '@ang
 import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
 
 @Component({
-  selector: 'ret-participants-selector',
+  selector: 'ra-participants-selector',
   host: { 'class': 'ng-animate' },
   styles: [`
     :host {

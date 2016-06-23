@@ -4,7 +4,7 @@ import { FirebaseService } from '../../../shared/services/firebase/firebase.serv
 import { ParticipantComponent } from '../participant/participant.component';
 
 @Component({
-  selector: 'ret-participants',
+  selector: 'ra-participants',
   directives: [ ParticipantComponent ],
   styles: [`
     :host {
@@ -14,7 +14,7 @@ import { ParticipantComponent } from '../participant/participant.component';
     }
   `],
   template: `
-    <ret-participant *ngFor="let participant of participants" [participant]="participant"></ret-participant>
+    <ra-participant *ngFor="let participant of participants" [participant]="participant"></ra-participant>
   `
 })
 export class ParticipantsComponent {

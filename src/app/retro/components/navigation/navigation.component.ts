@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { StepsService } from '../../services/steps/steps.service';
 
 @Component({
-  selector: 'ret-navigation',
+  selector: 'ra-navigation',
   providers: [ StepsService ],
   styles: [`
     :host {

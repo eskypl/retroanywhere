@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
 
 @Component({
-  selector: 'ret-participant',
+  selector: 'ra-participant',
   host: {'class' : 'ng-animate'},
   styles: [`
     :host(.ng-enter) {

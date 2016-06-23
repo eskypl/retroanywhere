@@ -20,19 +20,19 @@ import { NavigationComponent } from '../navigation/navigation.component';
       flex-direction: column;
       
     }
-    .ret-buckets {
+    .buckets {
       flex-grow: 1;
       display: flex;
       flex-direction: row;
       z-index: 1;
     }
-    .ret-buckets ret-bucket:nth-child(2n+0) {
+    .buckets ra-bucket:nth-child(2n+0) {
       background: #1c2b39
     }
-    .ret-buckets ret-bucket:nth-child(2n+1) {
+    .buckets ra-bucket:nth-child(2n+1) {
       background: #203141;
     }
-    .ret-header {
+    .header {
       display: flex;
       flex-direction: row;
       padding: 1rem 2.5rem;
@@ -41,43 +41,43 @@ import { NavigationComponent } from '../navigation/navigation.component';
       font-size: 1.625rem;
       font-weight: 700;      
     }
-    .ret-header h1 {
+    .header h1 {
       padding: 0 0 0 5rem;
       line-height: 4.375rem;
       font-weight: 700;
       background: transparent url('https://firebasestorage.googleapis.com/v0/b/eskyid-retro-app.appspot.com/o/img%2Flogo.png?alt=media&token=3fdf1c57-b7d5-4141-a92b-476578936495') no-repeat;
     }
-    .ret-step {
+    .step {
       font-size: 1.25rem;
       font-weight: 400;
       line-height: 4.575rem;
       margin-bottom: -.2rem;
     }
-    ret-participants {
+    ra-participants {
       flex-grow: 1;
     }
   `],
   template: `
     <section class="{{stepClass}}">
-      <header class="ret-header">
+      <header class="header">
         <h1>eSky retrospective</h1>
-        <span *ngIf="stepName" class="ret-step">&nbsp;&nbsp;-&nbsp;&nbsp;{{stepName}}</span>
-        <ret-participants></ret-participants>
+        <span *ngIf="stepName" class="step">&nbsp;&nbsp;-&nbsp;&nbsp;{{stepName}}</span>
+        <ra-participants></ra-participants>
       </header>
   
-      <div [ngClass]="{hidden: hideBuckets, 'ret-buckets': true}" >
-        <ret-bucket *ngFor="let bucket of buckets"
+      <div [ngClass]="{hidden: hideBuckets, 'buckets': true}" >
+        <ra-bucket *ngFor="let bucket of buckets"
           [name]="bucket.name"
           [color]="bucket.color"
           [icon]="bucket.icon"
           [id]="bucket.id">
-        </ret-bucket>
+        </ra-bucket>
       </div>
       <div [hidden]="currentStepKey !== 'ADD_ACTIONS'">
-        <ret-action-list></ret-action-list>
+        <ra-action-list></ra-action-list>
       </div>
   
-      <ret-navigation></ret-navigation>
+      <ra-navigation></ra-navigation>
     </section>
   `
 })

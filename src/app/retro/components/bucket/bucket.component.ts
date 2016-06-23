@@ -6,7 +6,7 @@ import { ItemComponent } from '../item/item.component';
 declare var firebase: any;
 
 @Component({
-  selector: 'ret-bucket',
+  selector: 'ra-bucket',
   directives: [ ItemComponent ],
   styles: [`
     :host {
@@ -15,13 +15,13 @@ declare var firebase: any;
       padding: 1rem 2.5rem 1rem 2.5rem;
       color:#f6f7f8;
     }
-    .ret-items {
+    .items {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-between;
     }
-    .ret-item-add {
+    .item-add {
       display: block;
       margin: 1.25rem 0 0 0;
       flex-basis: 16.875rem;
@@ -37,14 +37,14 @@ declare var firebase: any;
     .icon-plus {
       transition: transform 0.5s ease;
     }
-    .ret-item-add:hover .icon-plus {
+    .item-add:hover .icon-plus {
       transform: scale(1.5);
     }
-    .ret-bucket-name {
+    .bucket-name {
       text-align: center;
       line-height: 3.125rem;
     }
-    .ret-bucket-name .icon {
+    .bucket-name .icon {
       display: inline-block;
       width: 3.125rem;
       height: 3.125rem;
@@ -55,11 +55,11 @@ declare var firebase: any;
       font-size: 1.25rem;
       margin-right: 1rem;
     }
-    .ret-bucket-name .icon::before {
+    .bucket-name .icon::before {
       position: relative;
       top: .9375rem;
     }
-    .ret-item-add .icon {
+    .item-add .icon {
       display: inline-block;
       width: 4.375rem;
       height: 4.375rem;
@@ -69,18 +69,18 @@ declare var firebase: any;
       position: relative;
       font-size: 2.313rem;
     }
-    .ret-item-add .icon::before {
+    .item-add .icon::before {
       position:relative;
       top: .938rem;
     }
   `],
   template: `
-    <h2 class="ret-bucket-name">
+    <h2 class="bucket-name">
         <span class="icon icon-{{icon}}" [style.color]="color"></span> {{name}}
     </h2>
-    <div class="ret-items">
-        <ret-item *ngFor="let uid of itemUids" [uid]="uid" [style.background]="color"></ret-item>
-        <button class="ret-item-add" (click)="addItem()">
+    <div class="items">
+        <ra-item *ngFor="let uid of itemUids" [uid]="uid" [style.background]="color"></ra-item>
+        <button class="item-add" (click)="addItem()">
             <span class="icon icon-plus"></span>
         </button>
     </div>

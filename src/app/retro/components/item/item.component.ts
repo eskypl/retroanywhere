@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
 
 @Component({
-  selector: 'ret-item',
+  selector: 'ra-item',
   host: {'class' : 'ng-animate'},
   styles: [`
     :host(.ng-enter) {
@@ -29,24 +29,24 @@ import { FirebaseService } from '../../../shared/services/firebase/firebase.serv
      * on select step, however stepsStrategy adds
      * show-votes class anyway on this step, so this
      * rule does not work as expected. */
-    :host-context(.not-VOTE) .ret-item-voting {
+    :host-context(.not-VOTE) .item-voting {
       visibility: hidden !important;
     }
 
     /* vote step */
-    :host-context(.VOTE) .ret-select {
+    :host-context(.VOTE) .select {
       display: none;
     }
-    :host-context(.VOTE) .ret-vote-actions:hover,
-    :host-context(.VOTE) .ret-item-voting.show-votes {
+    :host-context(.VOTE) .vote-actions:hover,
+    :host-context(.VOTE) .item-voting.show-votes {
       visibility: visible;
     }
 
     /* select step */
-    :host-context(.SELECT) .ret-vote-actions {
+    :host-context(.SELECT) .vote-actions {
       display: none;
     }
-    :host-context(.SELECT) .ret-item-voting.show-votes {
+    :host-context(.SELECT) .item-voting.show-votes {
       visibility: visible !important;
     }
 
@@ -89,7 +89,7 @@ import { FirebaseService } from '../../../shared/services/firebase/firebase.serv
       float: left;
       margin-right: .625rem;
     }
-    .ret-item-voting {
+    .item-voting {
       visibility: hidden;
       min-height: 2.875rem;
       max-height: 2.875rem;
@@ -97,16 +97,16 @@ import { FirebaseService } from '../../../shared/services/firebase/firebase.serv
       background-color: rgba(0,0,0,0.05);
       position: relative;
     }
-    .ret-vote-actions {
+    .vote-actions {
       visibility: hidden;
     }
-    :host(:hover) .ret-item-voting {
+    :host(:hover) .item-voting {
       visibility: visible;
     }
-    :host(:hover) .ret-vote-actions {
+    :host(:hover) .vote-actions {
       visibility: visible;
     }
-    .ret-vote-actions button {
+    .vote-actions button {
       background: transparent;
       border: 0;
       padding: 0;
@@ -114,7 +114,7 @@ import { FirebaseService } from '../../../shared/services/firebase/firebase.serv
       max-height: 1.625rem;
       cursor: pointer;
     }
-    .ret-vote-actions .icon {
+    .vote-actions .icon {
       display: inline-block;
       border-radius: 50%;
       background-color: #fff;
@@ -125,25 +125,25 @@ import { FirebaseService } from '../../../shared/services/firebase/firebase.serv
     button:hover .icon {
       color: #2c3b49;
     }
-    .ret-vote-count {
+    .vote-count {
       margin-left: 1rem;
       font-size: 1.375rem;
       font-weight: bold;
     }
-    .ret-vote-count .sufix {
+    .vote-count .sufix {
       font-weight: 400;
       font-size: .875rem;
     }
-    .ret-item-voting:not(.has-votes) .ret-vote-count {
+    .item-voting:not(.has-votes) .vote-count {
       opacity: .2;
     }
-    .ret-vote-actions {
+    .vote-actions {
       position: absolute;
       top: .425rem;
       right: 1rem;
       max-height: 1.625rem;
     }
-    .ret-select {
+    .select {
       display: inline-block;
       float: left;
       width: 1.625rem;
@@ -155,17 +155,17 @@ import { FirebaseService } from '../../../shared/services/firebase/firebase.serv
       color: #1da023;
       text-align: center;
     }
-    .ret-select input {
+    .select input {
       visibility: hidden;
     }
   `],
   template: `
-    <div [ngClass]="{'ret-item-voting': true, 'has-votes': stepStrategy.hasVotes, 'show-votes': stepStrategy.showVotes}">
-      <label [ngClass]="{'ret-select': true, 'icon-check': selected}">
+    <div [ngClass]="{'item-voting': true, 'has-votes': stepStrategy.hasVotes, 'show-votes': stepStrategy.showVotes}">
+      <label [ngClass]="{'select': true, 'icon-check': selected}">
         <input [(ngModel)]="selected" type="checkbox"/>
       </label>
-      <span class="ret-vote-count">{{stepStrategy.votes}} <span class="sufix">votes</span></span>
-      <div class="ret-vote-actions" *ngIf="stepStrategy.showItemVoting">
+      <span class="vote-count">{{stepStrategy.votes}} <span class="sufix">votes</span></span>
+      <div class="vote-actions" *ngIf="stepStrategy.showItemVoting">
         <button *ngIf="stepStrategy.showUnvoteButton" (click)="removeVote()"><span class="icon icon-minus_2"></span></button>
         <button *ngIf="stepStrategy.showItemVoting" (click)="addVote()"><span class="icon icon-plus_2"></span></button>
       </div>

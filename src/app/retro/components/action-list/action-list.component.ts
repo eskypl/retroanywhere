@@ -8,7 +8,7 @@ import { ParticipantsSelectorComponent } from '../participants-selector/particip
 declare var firebase: any;
 
 @Component({
-  selector: 'ret-action-list',
+  selector: 'ra-action-list',
   directives: [ SelectedItemComponent, ActionComponent, ParticipantsSelectorComponent ],
   styles: [`
     :host {
@@ -19,16 +19,16 @@ declare var firebase: any;
       padding: 1rem 2.5rem 1rem 1.25rem;
       color:#f6f7f8;
     }
-    ret-selected-item {
+    ra-selected-item {
       margin-left: 5rem;    
     }
-    ret-selected-item:nth-child(3n+1) {
+    ra-selected-item:nth-child(3n+1) {
       margin-left: 1.25rem;
     }
   `],
   template: `
-      <ret-selected-item *ngFor="let selectedItemId of selectedItemsIds" [itemId]="selectedItemId" (temmateSelector)="onSelector($event)"></ret-selected-item>
-      <ret-participants-selector *ngIf="activeAction" (close)="selectorClose()" (select)="selectorSelect($event)"></ret-participants-selector>
+      <ra-selected-item *ngFor="let selectedItemId of selectedItemsIds" [itemId]="selectedItemId" (temmateSelector)="onSelector($event)"></ra-selected-item>
+      <ra-participants-selector *ngIf="activeAction" (close)="selectorClose()" (select)="selectorSelect($event)"></ra-participants-selector>
   `
 })
 export class ActionListComponent {

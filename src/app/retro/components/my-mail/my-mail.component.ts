@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FirebaseService } from '../../../shared/services/firebase/firebase.service';
 
 @Component({
-  selector: 'ret-my-mail',
+  selector: 'ra-my-mail',
   styles: [`
     .email {
     display: inline-block;

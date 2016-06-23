@@ -4,7 +4,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 import { FirebaseService } from './shared/services/firebase/firebase.service';
 
 @Component({
-  selector: 'ret-app',
+  selector: 'ra-app',
   providers: [ FirebaseService ],
   directives: [ ROUTER_DIRECTIVES ],
   template: `
